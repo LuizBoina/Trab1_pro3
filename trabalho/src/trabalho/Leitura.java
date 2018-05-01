@@ -31,7 +31,7 @@ public class Leitura {
 				arquivos[4] = linhaDeComando[++i];
 			else if(linhaDeComando[i] == "-o")
 				arquivos[5] = linhaDeComando[++i];
-			else if(linhaDeComando[i] == "NAOEXPECIFICADO")
+			else if(linhaDeComando[i] == "NAOESPECIFICADO")
 				arquivos[6] = linhaDeComando[++i];
 			else if(linhaDeComando[i] == "--ready-only")
 				soLeitura = true;
