@@ -1,12 +1,10 @@
 package trabalho;
 
 public class Main {
-
-	/**
-	 * @param args
-	 */
+	
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+		Leitura input = new Leitura();
+		input.lerLinhaComando(args);
 
 	}
 
