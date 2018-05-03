@@ -1,13 +1,17 @@
 package trabalho;
 
-public class Docente{
-	public String nome;
-	public int codigo;
-	public String departamento;
-	
-	public Docente(String nome){
-		this.nome = nome;
+public class Docente {
+	private int codigo;
+	private String nome;
+	private String departamento;
+
+	public Docente() {
+		codigo = 0;
+		departamento = nome = null;
 	}
-	
-	
+
+	public void preencheDocentes(String planilhaDiscentes) {
+
+	}
+
 }
