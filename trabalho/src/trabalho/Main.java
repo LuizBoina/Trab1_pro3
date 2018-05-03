@@ -9,7 +9,7 @@ public class Main {
 
 	public static void main(String[] args) {
 		String[] planilhas = Main.lerLinhaComando(args);
-		Main.imprimirNomesArquivos(planilhas);
+		//Main.imprimirNomesArquivos(planilhas);
 	}
 	
 	public static String[] lerLinhaComando(String[] linhaDeComando) {
@@ -35,7 +35,6 @@ public class Main {
 			else if(Objects.equals(linhaDeComando[i], "--write-only"))
 				soEscrita = true;
 		}
-		//Main.imprimirNomesArquivos(arquivos);
 		return arquivos;
 	}
 	public static void imprimirNomesArquivos(String[] arquivos) {
@@ -43,4 +42,6 @@ public class Main {
 		for(int i = 0 ; i < length ; i++) 
 			System.out.println(arquivos[i]);
 	}
+	
+	
 }
