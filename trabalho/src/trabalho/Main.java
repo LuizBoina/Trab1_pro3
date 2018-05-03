@@ -6,10 +6,13 @@ public class Main {
 	private static final int N_PLANILHAS = 6;
 	private static boolean soLeitura = false;
 	private static boolean soEscrita = false;
+	public static Docente[] docentes;
+	public static Discente[] discentes;
 
 	public static void main(String[] args) {
 		String[] planilhas = Main.lerLinhaComando(args);
 		//Main.imprimirNomesArquivos(planilhas);
+		
 	}
 	
 	public static String[] lerLinhaComando(String[] linhaDeComando) {
