@@ -10,8 +10,14 @@ public class Docente {
 		departamento = nome = null;
 	}
 
-	public void preencheDocentes(String planilhaDiscentes) {
-
+	public void preencheDocente(String[] celulas) {
+		try {
+			this.codigo = Integer.parseInt(celulas[0]);
+		} catch (NumberFormatException e) {
+			System.out.println("Numero com formato errado!");
+		}
+		this.nome = celulas[1];
+		this.departamento = celulas[2];
 	}
 
 }

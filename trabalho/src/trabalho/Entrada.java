@@ -1,6 +1,7 @@
 package trabalho;
 
 import java.io.BufferedReader;
+import java.io.LineNumberReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Objects;
@@ -71,8 +72,27 @@ public class Entrada {
 		return qtdDoscentes;
 	}
 
-	public void lePlanilha(String caminho) {
-
+	public String[] retornaLinhaLida(int posCaminhoArquivos, int tamLinha, int index) {
+		String[] celulas = new String[tamLinha];
+		LineNumberReader leitorLinha = null;
+		try {
+			leitorLinha = new LineNumberReader(new FileReader(this.caminhoArquivos[posCaminhoArquivos]));
+			leitorLinha.setLineNumber(index);
+			String celula = leitorLinha.readLine();
+			celulas = celula.split(";");
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (leitorLinha != null)
+					leitorLinha.close();
+				if (leitorLinha != null)
+					leitorLinha.close();
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			}
+		}
+		return celulas;
 	}
 
 }
