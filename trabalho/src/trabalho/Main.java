@@ -6,18 +6,19 @@ public class Main {
 		Entrada input = new Entrada();
 		input.lerLinhaComando(args);
 		int numDoscentes = input.qtdLinhas(input.getIndexCaminhoArquivo(0));
-		Docente[] Docentes = new Docente[numDoscentes];	//talvez abrir o arq aq e fechar dps do for melhore o desempenho
-		for(int i =0; i< numDoscentes;i++) {
-			Docentes[i] = new Docente();
-			String[] celulasLidas = input.retornaLinhaLida(0, 3, i);
-			Docentes[i].preencheDocente(celulasLidas);
-		}
-		int numDiscentes = input.qtdLinhas(input.getIndexCaminhoArquivo(1));	//talvez de para botar esse metodo em uma so funcao
+		Pessoa refPessoas = new Pessoa();
+		Docente[] Docentes = new Docente[numDoscentes];
+		String[][] planilhaDocente = input.lePlanilha(0, 3);
+		for (int i = 0; i < numDoscentes; i++)
+			Docentes[i].preencheDocente(planilhaDocente[i]);
+		input.limparPlanilha(planilhaDocente);
+		int numDiscentes = input.qtdLinhas(input.getIndexCaminhoArquivo(1));
 		Discente[] Discentes = new Discente[numDiscentes];
-		for(int i = 0; i< numDiscentes; i++) {
-			Discentes[i] = new Discente();
-			String[] celulasLidas = input.retornaLinhaLida(1, 3, i);
-			Discentes[i].preencheDiscente(celulasLidas);
-		}
+		String[][] planilhaDiscente = input.lePlanilha(1, 3);
+		for (int i = 0; i < numDiscentes; i++)
+			Discentes[i].preencheDiscente(planilhaDiscente[i]);
+		input.limparPlanilha(planilhaDiscente);
+		Docentes[0].qSort(Docentes, numDoscentes);
+		
 	}
 }

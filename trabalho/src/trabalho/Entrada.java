@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.LineNumberReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.FileNotFoundException;
 import java.util.Objects;
 
 public class Entrada {
@@ -72,27 +73,37 @@ public class Entrada {
 		return qtdDoscentes;
 	}
 
-	public String[] retornaLinhaLida(int posCaminhoArquivos, int tamLinha, int index) {
-		String[] celulas = new String[tamLinha];
-		LineNumberReader leitorLinha = null;
+	public String[][] lePlanilha(int posCaminhoArquivos, int qtdCelulas) {
+		String caminhoArq = getIndexCaminhoArquivo(posCaminhoArquivos);
+		int numLinhas = qtdLinhas(caminhoArq);
+		String[][] planilha = new String[numLinhas][qtdCelulas];
+		BufferedReader leitor = null;
+		String linhaLida = "";
 		try {
-			leitorLinha = new LineNumberReader(new FileReader(this.caminhoArquivos[posCaminhoArquivos]));
-			leitorLinha.setLineNumber(index);
-			String celula = leitorLinha.readLine();
-			celulas = celula.split(";");
+			leitor = new BufferedReader(new FileReader(caminhoArq));
+			for (int i = 0; (linhaLida = leitor.readLine()) != null; i++)
+				planilha[i] = linhaLida.split(";");
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
-			try {
-				if (leitorLinha != null)
-					leitorLinha.close();
-				if (leitorLinha != null)
-					leitorLinha.close();
-			} catch (IOException ex) {
-				ex.printStackTrace();
+			if (leitor != null) {
+				try {
+					leitor.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		}
-		return celulas;
+		return planilha;
 	}
-
+	
+	public void limparPlanilha(String[][] planilha) {
+		int qtdLinhas = planilha.length;
+		for(int i =0;i<qtdLinhas;i++) {
+			for(int j = 0; j<planilha[i].length;j++)
+				planilha[i][j] = null;
+		}
+	}
 }

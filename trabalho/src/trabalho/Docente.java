@@ -1,6 +1,6 @@
 package trabalho;
 
-public class Docente {
+public class Docente extends Pessoa{
 	private int codigo;
 	private String nome;
 	private String departamento;
@@ -18,6 +18,12 @@ public class Docente {
 		}
 		this.nome = celulas[1];
 		this.departamento = celulas[2];
+	}
+	public void qSort(Docente[] vetDocente, int tamVet) {
+		
+	}
+	public void buscaDocenteVetDocentes() {
+		
 	}
 
 }

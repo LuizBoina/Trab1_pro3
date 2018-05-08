@@ -1,6 +1,6 @@
 package trabalho;
 
-public class Discente {
+public class Discente extends Pessoa{
 	private int matricula;
 	private String nome;
 	private int codigoCurso;
