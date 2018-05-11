@@ -1,13 +1,14 @@
 package trabalho;
 
-public class Docente extends Pessoa{
-	private int codigo;
+public class Docente{
 	private String nome;
+	private int codigo;
 	private String departamento;
+	private ProdCientifica[] prodCientificas;
 
 	public Docente() {
 		codigo = 0;
-		departamento = nome = null;
+		nome = departamento = null;
 	}
 
 	public void preencheDocente(String[] celulas) {
@@ -19,11 +20,8 @@ public class Docente extends Pessoa{
 		this.nome = celulas[1];
 		this.departamento = celulas[2];
 	}
-	public void qSort(Docente[] vetDocente, int tamVet) {
-		
-	}
-	public void buscaDocenteVetDocentes() {
-		
+	public String getDepartamento() {
+		return this.departamento;
 	}
 
 }

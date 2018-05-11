@@ -1,13 +1,13 @@
 package trabalho;
 
-public class Discente extends Pessoa{
+public class Discente{
 	private int matricula;
 	private String nome;
 	private int codigoCurso;
 	
 	public Discente() {
-		matricula = codigoCurso = 0;
 		nome = null;
+		matricula = codigoCurso = 0;
 	}
 	
 	public void preencheDiscente(String[] celulas) {

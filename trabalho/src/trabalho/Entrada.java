@@ -21,7 +21,7 @@ public class Entrada {
 	 */
 
 	public Entrada() {
-		N_PLANILHAS = 6;
+		N_PLANILHAS = 7;
 		caminhoArquivos = new String[N_PLANILHAS];
 		soLeitura = soEscrita = false;
 	}
@@ -32,21 +32,23 @@ public class Entrada {
 
 	public void lerLinhaComando(String[] linhaDeComando) {
 		for (int i = 0; i < linhaDeComando.length; i++) {
-			if (Objects.equals(linhaDeComando[i], "-d"))
+			if (linhaDeComando[i].equals("-d"))
 				caminhoArquivos[0] = linhaDeComando[++i];
-			else if (Objects.equals(linhaDeComando[i], "-a"))
+			else if (linhaDeComando[i].equals("-a"))
 				caminhoArquivos[1] = linhaDeComando[++i];
-			else if (Objects.equals(linhaDeComando[i], "-p"))
+			else if (linhaDeComando[i].equals("-p"))
 				caminhoArquivos[2] = linhaDeComando[++i];
-			else if (Objects.equals(linhaDeComando[i], "-c"))
+			else if (linhaDeComando.equals("-c"))
 				caminhoArquivos[3] = linhaDeComando[++i];
-			else if (Objects.equals(linhaDeComando[i], "-r"))
+			else if (linhaDeComando[i].equals("-r"))
 				caminhoArquivos[4] = linhaDeComando[++i];
-			else if (Objects.equals(linhaDeComando[i], "-o"))
+			else if (linhaDeComando[i].equals("-og"))
 				caminhoArquivos[5] = linhaDeComando[++i];
-			else if (Objects.equals(linhaDeComando[i], "--read-only"))
+			else if (linhaDeComando[i].equals("-op"))
+				caminhoArquivos[6] = linhaDeComando[++i];
+			else if (linhaDeComando[i].equals("--read-only"))
 				soLeitura = true;
-			else if (Objects.equals(linhaDeComando[i], "--write-only"))
+			else if (linhaDeComando[i].equals("--write-only"))
 				soEscrita = true;
 		}
 	}
