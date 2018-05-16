@@ -71,7 +71,7 @@ public class Entrada {
 				ex.printStackTrace();
 			}
 		}
-		return linhas;
+		return (linhas-1);	//total de linhas menos a especif da coluna
 	}
 
 	public String[][] lePlanilha(int posCaminhoArquivos, int qtdCelulas) {
@@ -82,8 +82,10 @@ public class Entrada {
 		String linhaLida = "";
 		try {
 			leitor = new BufferedReader(new FileReader(caminhoArq));
-			for (int i = 0; (linhaLida = leitor.readLine()) != null; i++)
-				planilha[i] = linhaLida.split(";");
+			linhaLida = leitor.readLine();	//para desconsiderar a especific da coluna
+			for (int i = 0; (linhaLida = leitor.readLine()) != null; i++) {
+					planilha[i] = linhaLida.split(";");
+			}
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

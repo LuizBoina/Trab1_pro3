@@ -18,11 +18,11 @@ public class Curso {
 			System.out.println("Numero com formato errado!");
 		}
 		this.nome = celulas[1];
-		if (celulas[2] == null)
+		if (celulas[2].length() == 0)
 			this.grad = false;
 		else
 			this.grad = true;
-		if (celulas[3] == null)
+		if (celulas[3].length() == 0)
 			this.posGrad = false;
 		else
 			this.posGrad = true;

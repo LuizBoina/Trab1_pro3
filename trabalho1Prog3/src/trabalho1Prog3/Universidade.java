@@ -20,7 +20,7 @@ public class Universidade{
 			docentes[i] = new Docente(planilhaDocentes[i]);
 			int indexDepartamentoLista = this.getPosDepartamento(planilhaDocentes[i][2]);
 			if (indexDepartamentoLista != -1)
-				this.departamentos.get(i).setNovoDocente(docentes[i]);
+				this.departamentos.get(indexDepartamentoLista).setNovoDocente(docentes[i]);
 			else {
 				Departamento novoDepartamento = new Departamento(planilhaDocentes[i][2]);
 				novoDepartamento.setNovoDocente(docentes[i]);
