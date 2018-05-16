@@ -23,4 +23,8 @@ public class Docente {
 	public String getDepartamento() {
 		return this.departamento;
 	}
+	
+	public int getCodigo() {
+		return this.codigo;
+	}
 }

@@ -27,5 +27,8 @@ public class Curso {
 		else
 			this.posGrad = true;
 	}
+	public int getCodigoCurso() {
+		return this.codigo;
+	}
 
 }

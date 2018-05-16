@@ -24,5 +24,15 @@ public class Departamento {
 		// bubbleSort?
 	}
 
-	public int indexDocente
+	public void procuraDonoProducaoCientifica(ArrayList<ProducaoCientifica> prodCientificas) {
+		for (int i = 0; i < docentes.size(); i++) {
+			for (int j = 0; j < prodCientificas.size(); j++) {
+				if (docentes.get(i).getCodigo() == prodCientificas.get(j).getCodigoDocente()) {
+					docentes.get(i).prodCientificas.add(prodCientificas.get(j));
+					prodCientificas.remove(j); // tratar erro
+				}
+			}
+		}
+	}
+
 }

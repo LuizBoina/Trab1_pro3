@@ -1,11 +1,11 @@
 package trabalho1Prog3;
 
 public class ProducaoCientifica {
-	final int codigoDocente;
+	private int codigoDocente;
 	private String titulo;
 	final boolean qualificada;
 	
-	public ProducoesCientificas(String celulas) {
+	public ProducaoCientifica(String[] celulas) {
 		try {
 			this.codigoDocente = Integer.parseInt(celulas[0]);
 		} catch (NumberFormatException e) {

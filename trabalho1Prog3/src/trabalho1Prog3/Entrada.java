@@ -23,7 +23,8 @@ public class Entrada {
 	}
 
 	public void lerLinhaComando(String[] linhaDeComando) {
-		for (int i = 0; i < linhaDeComando.length; i++) {
+		int i = 0;
+		while (i < linhaDeComando.length) {
 			if (Objects.equals(linhaDeComando[i], "-d"))
 				caminhoArquivos[0] = linhaDeComando[++i];
 			else if (linhaDeComando[i].equals("-a"))
@@ -45,6 +46,9 @@ public class Entrada {
 				soEscrita = true;
 				i++;
 			}
+			else
+				System.out.println("argumento invalido");
+			i++;
 		}
 	}
 
