@@ -8,7 +8,8 @@ public class Docente {
 	private String nome;
 	private int codigo;
 	private String departamento;
-
+	private List<Disciplina> disciplinasDadas;
+	
 	public Docente(String[] celulas) {
 		try {
 			this.codigo = Integer.parseInt(celulas[0]);
@@ -18,6 +19,7 @@ public class Docente {
 		this.nome = celulas[1];
 		this.departamento = celulas[2];
 		this.prodCientificas = new ArrayList<ProducaoCientifica>();
+		this.disciplinasDadas = new ArrayList<Disciplina>();
 	}
 
 	public String getDepartamento() {
@@ -27,4 +29,10 @@ public class Docente {
 	public int getCodigo() {
 		return this.codigo;
 	}
+	
+	public void adicionaDisciplinaALista(Disciplina disciplina) {
+		this.disciplinasDadas.add(disciplina);
+	}
+	
+	//metodo que retorna o Curso a partir da disciplina dada
 }

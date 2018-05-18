@@ -34,32 +34,45 @@ public class Universidade{
 		for(int i = 0;i<numProdCientifica;i++)
 			prodCientificas.add(new ProducaoCientifica(planilhaProdCientificas[i]));
 		for(int i = 0;i<departamentos.size();i++)
-			departamentos.get(i).procuraDonoProducaoCientifica(prodCientificas);
+			departamentos.get(i).adicionaProducaoCientificaADocente(prodCientificas);
 		
 	}
 
 	public void adicionaCursos(String[][] planilhaCursos) {
-		for(int i = 0; i<this.N_CURSOS;i++)
+		for(int i = 0; i<N_CURSOS;i++)
 			cursos[i] = new Curso(planilhaCursos[i]);
 	}
 
-	public int getPosDepartamento(String departamento) {
+	private int getPosDepartamento(String departamento) {
 		for (int i = 0; i < departamentos.size(); i++) {
 			if (departamentos.get(i).getNomeDepartamento().equals(departamento))
 				return i;
 		}
 		return -1;
 	}
-
-	public int getPosCurso(int codigo) {
-		for(int i = 0;i<this.N_CURSOS;i++) {
-			if(codigo==this.cursos[i].getCodigoCurso())
-				return i;
+	
+	public void adicionaDisciplinas(int numDisciplinas, String[][] planilhaDisciplinas) {
+		ArrayList<Disciplina> disciplinas = new ArrayList<Disciplina>(numDisciplinas);
+		for(int i = 0;i<numDisciplinas;i++) {
+			disciplinas.add(new Disciplina(planilhaDisciplinas[i]));
+			adicionaDisciplinaNoCurso(disciplinas.get(i));
+			adicionaDisciplinaADocente(disciplinas.get(i));
 		}
-		return -1;
 	}
 	
-	public void adicionaDisciplinasACursos(int numDisciplinas, String[][] planilhaDisciplinas) {
+	public void adicionaDisciplinaADocente(Disciplina disciplina) {
+		for(int i = 0;i<departamentos.size();i++)
+			if(departamentos.get(i).DisciplinaPertenceADocente(disciplina))
+				break;
+	}
+	
+	private void adicionaDisciplinaNoCurso(Disciplina disciplina) {
+		for(int i = 0;i<N_CURSOS;i++) {
+			if(cursos[i].getCodigoCurso() == disciplina.getCodigoCurso()) {
+				cursos[i].adicionaDisciplinaNoCurso(disciplina);
+				break;
+			}
+		}
 		
 	}
 }

@@ -10,10 +10,23 @@ public class Disciplina {
 
 	public Disciplina(String[] celulas) {
 		try {
-			this.codigo = Integer.parseInt(celulas[0])
+			this.codigo = Integer.parseInt(celulas[0]);
+			this.codigoDocente = Integer.parseInt(celulas[2]);
+			this.cHSemanal = Integer.parseInt(celulas[3]);
+			this.cHSemestral = Integer.parseInt(celulas[4]);
+			this.codigoCurso = Integer.parseInt(celulas[5]);
+
+		} catch (NumberFormatException e) {
+			System.out.println("Numero com formato errado!");
 		}
-	}catch(NumberFormatException e)
-	{
-		System.out.println("Numero com formato errado!");
+		this.nome = celulas[1];
 	}
-}}
+	
+	public int getCodigoCurso() {
+		return this.codigoCurso;
+	}
+	
+	public int getCodigoDocente() {
+		return this.codigoDocente;
+	}
+}

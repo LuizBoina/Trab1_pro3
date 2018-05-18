@@ -24,7 +24,7 @@ public class Departamento {
 		// bubbleSort?
 	}
 
-	public void procuraDonoProducaoCientifica(ArrayList<ProducaoCientifica> prodCientificas) {
+	public void adicionaProducaoCientificaADocente(ArrayList<ProducaoCientifica> prodCientificas) {
 		for (int i = 0; i < docentes.size(); i++) {
 			for (int j = 0; j < prodCientificas.size(); j++) {
 				if (docentes.get(i).getCodigo() == prodCientificas.get(j).getCodigoDocente()) {
@@ -33,6 +33,16 @@ public class Departamento {
 				}
 			}
 		}
+	}
+	
+	public boolean DisciplinaPertenceADocente(Disciplina disciplina) {
+		for(int i = 0;i<docentes.size();i++) {
+			if(docentes.get(i).getCodigo() == disciplina.getCodigoDocente()) {
+				docentes.get(i).adicionaDisciplinaALista(disciplina);
+				return true;
+			}
+		}
+		return false;
 	}
 
 }

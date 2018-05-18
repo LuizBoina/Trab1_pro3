@@ -9,7 +9,7 @@ public class Curso {
 	private String nome;
 	private boolean ehGrad;
 
-	public Curso(String celulas[]) {
+	public Curso(String[] celulas) {
 		disciplinas = new ArrayList<Disciplina>();
 		try {
 			this.codigo = Integer.parseInt(celulas[0]);
@@ -17,17 +17,20 @@ public class Curso {
 			System.out.println("Numero com formato errado!");
 		}
 		this.nome = celulas[1];
-		if (celulas[2].equals("X")) {
-			this.ehGrad = true;
+		try {
+			if (celulas[2].equals("X"))
+				this.ehGrad = true;
+		} catch (ArrayIndexOutOfBoundsException e) {
 			this.ehGrad = false;
-		}
-		else {
-			this.ehGrad = false;
-			this.ehGrad = true;
 		}
 	}
+
 	public int getCodigoCurso() {
 		return this.codigo;
+	}
+
+	public void adicionaDisciplinaNoCurso(Disciplina disciplina) {
+		this.disciplinas.add(disciplina);
 	}
 
 }
