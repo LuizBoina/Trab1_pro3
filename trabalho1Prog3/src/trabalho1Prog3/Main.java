@@ -9,7 +9,7 @@ public class Main {
 		ufes.criaDepartamentos(input.qtdLinhas(input.getIndexCaminhoArquivo(0)), input.lePlanilha(0, 3));
 		ufes.adicionaCursos(input.lePlanilha(3, 4));
 		ufes.adicionaProdCientificaAosDocentes(input.qtdLinhas(input.getIndexCaminhoArquivo(2)), input.lePlanilha(2, 3));
-		
+		ufes.adicionaDisciplinasACursos(input.qtdLinhas(input.getIndexCaminhoArquivo(4)), input.lePlanilha(4, 6));
 	}
 
 }

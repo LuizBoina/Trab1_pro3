@@ -7,8 +7,7 @@ public class Curso {
 	private List<Disciplina> disciplinas;
 	private int codigo;
 	private String nome;
-	private boolean grad;
-	private boolean posGrad;
+	private boolean ehGrad;
 
 	public Curso(String celulas[]) {
 		disciplinas = new ArrayList<Disciplina>();
@@ -18,14 +17,14 @@ public class Curso {
 			System.out.println("Numero com formato errado!");
 		}
 		this.nome = celulas[1];
-		if (celulas[2].length() == 0)
-			this.grad = false;
-		else
-			this.grad = true;
-		if (celulas[3].length() == 0)
-			this.posGrad = false;
-		else
-			this.posGrad = true;
+		if (celulas[2].equals("X")) {
+			this.ehGrad = true;
+			this.ehGrad = false;
+		}
+		else {
+			this.ehGrad = false;
+			this.ehGrad = true;
+		}
 	}
 	public int getCodigoCurso() {
 		return this.codigo;

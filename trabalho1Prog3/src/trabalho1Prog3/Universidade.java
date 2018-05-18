@@ -58,4 +58,8 @@ public class Universidade{
 		}
 		return -1;
 	}
+	
+	public void adicionaDisciplinasACursos(int numDisciplinas, String[][] planilhaDisciplinas) {
+		
+	}
 }
