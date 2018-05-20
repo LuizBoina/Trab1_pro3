@@ -2,8 +2,9 @@ package trabalho1Prog3;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Collections;
 
-public class Universidade{
+public class Universidade {
 	private List<Departamento> departamentos;
 	private Curso[] cursos;
 	final int N_CURSOS;
@@ -31,15 +32,15 @@ public class Universidade{
 
 	public void adicionaProdCientificaAosDocentes(int numProdCientifica, String[][] planilhaProdCientificas) {
 		ArrayList<ProducaoCientifica> prodCientificas = new ArrayList<ProducaoCientifica>(numProdCientifica);
-		for(int i = 0;i<numProdCientifica;i++)
+		for (int i = 0; i < numProdCientifica; i++)
 			prodCientificas.add(new ProducaoCientifica(planilhaProdCientificas[i]));
-		for(int i = 0;i<departamentos.size();i++)
+		for (int i = 0; i < departamentos.size(); i++)
 			departamentos.get(i).adicionaProducaoCientificaADocente(prodCientificas);
-		
+
 	}
 
 	public void adicionaCursos(String[][] planilhaCursos) {
-		for(int i = 0; i<N_CURSOS;i++)
+		for (int i = 0; i < N_CURSOS; i++)
 			cursos[i] = new Curso(planilhaCursos[i]);
 	}
 
@@ -50,29 +51,126 @@ public class Universidade{
 		}
 		return -1;
 	}
-	
+
 	public void adicionaDisciplinas(int numDisciplinas, String[][] planilhaDisciplinas) {
 		ArrayList<Disciplina> disciplinas = new ArrayList<Disciplina>(numDisciplinas);
-		for(int i = 0;i<numDisciplinas;i++) {
+		for (int i = 0; i < numDisciplinas; i++) {
 			disciplinas.add(new Disciplina(planilhaDisciplinas[i]));
 			adicionaDisciplinaNoCurso(disciplinas.get(i));
 			adicionaDisciplinaADocente(disciplinas.get(i));
 		}
 	}
-	
+
 	public void adicionaDisciplinaADocente(Disciplina disciplina) {
-		for(int i = 0;i<departamentos.size();i++)
-			if(departamentos.get(i).DisciplinaPertenceADocente(disciplina))
+		for (Departamento depa : departamentos)
+			if (depa.ehDisciplinaDadaPeloDocente(disciplina))
 				break;
 	}
 	
+	public void adicionaCursosADocentes() {
+		
+	}
+
 	private void adicionaDisciplinaNoCurso(Disciplina disciplina) {
-		for(int i = 0;i<N_CURSOS;i++) {
-			if(cursos[i].getCodigoCurso() == disciplina.getCodigoCurso()) {
-				cursos[i].adicionaDisciplinaNoCurso(disciplina);
+		for (Curso curso : cursos) {
+			if (curso.getCodigoCurso() == disciplina.getCodigoCurso()) {
+				curso.adicionaDisciplinaNoCurso(disciplina);
 				break;
 			}
 		}
+	}
+
+	public void adicionaDiscentesAosCursos(int numDiscentes, String[][] planilhaDiscentes) {
+		ArrayList<Discente> discentes = new ArrayList<Discente>(numDiscentes);
+		for (int i = 0; i < numDiscentes; i++) {
+			discentes.add(new Discente(planilhaDiscentes[i]));
+			for (int j = 0; j < N_CURSOS; j++) {
+				if (cursos[j].getCodigoCurso() == discentes.get(i).getCodigoCurso()) {
+					cursos[j].adicionaDiscenteNoCurso(discentes.get(i));
+					break;
+				}
+			}
+		}
+	}
+
+	public void adicionaOrientacaoGradAosDocentes(int numOrientacao, String[][] planilhaOrientacoes) {
+		ArrayList<OrientaGrad> orientaGrad = new ArrayList<OrientaGrad>(numOrientacao);
+		for (int i = 0; i < numOrientacao; i++) {
+			orientaGrad.add(new OrientaGrad(planilhaOrientacoes[i]));
+			for (int j = 0; j < departamentos.size(); j++) {
+				int posDocenteNoDepartamento = departamentos.get(j).achouDocenteNoDepartamento(orientaGrad.get(i));
+				if (posDocenteNoDepartamento != -1) {
+					departamentos.get(j).adicionaOrientacaoAoDocente(posDocenteNoDepartamento, orientaGrad.get(i));
+					break;
+				}
+			}
+		}
+	}
+
+	public void adicionaOrientacaoPosGradAosDocentes(int numOrientacao, String[][] planilhaOrientacoes) {
+		ArrayList<OrientaPos> orientaPos = new ArrayList<OrientaPos>(numOrientacao);
+		for (int i = 0; i < numOrientacao; i++) {
+			orientaPos.add(new OrientaPos(planilhaOrientacoes[i]));
+			for (int j = 0; j < departamentos.size(); j++) {
+				int posDocenteNoDepartamento = departamentos.get(j).achouDocenteNoDepartamento(orientaPos.get(i));
+				if (posDocenteNoDepartamento != -1) {
+					departamentos.get(j).adicionaOrientacaoAoDocente(posDocenteNoDepartamento, orientaPos.get(i));
+					break;
+				}
+			}
+		}
+	}
+
+	public int quantidadeTotalDocentes() {
+		int qtd = 0;
+		for (Departamento dep : departamentos)
+			qtd += dep.getQuantidadeDocentes();
+		return qtd;
+	}
+
+	public int getDepartamentoSize() {
+		return this.departamentos.size();
+	}
+
+	public Departamento getDepartamento(int posDepartamentoNaLista) {
+		return this.departamentos.get(posDepartamentoNaLista);
+	}
+
+	public void gerarPad(Saida output) {
+		if (output.abrirArquivoParaEscrita("/1-pad.csv")) {
+			output.escreverCabecalho("HEAD_PAD");
+			ArrayList<Docente> docentesUfes = new ArrayList<Docente>(quantidadeTotalDocentes());
+			for(Departamento depa : departamentos)
+				docentesUfes.addAll(depa.getDocentes());
+			Collections.sort(docentesUfes, new ComparaPorNome());
+			for(Docente docen :docentesUfes)
+				output.escreveString(docen.toStringParaPad());
+			output.fecharFw();
+		}
+		//remover ultima linha em branco
+	}
+	
+	public void gerarRha(Saida output) {
+		if(output.abrirArquivoParaEscrita("/2-rha.csv")) {
+			output.escreverCabecalho("HEAD_RHA");
+			ArrayList<Docente> docentesUfes = new ArrayList<Docente>(quantidadeTotalDocentes());
+			for(Departamento depa : departamentos)
+				docentesUfes.addAll(depa.getDocentes());
+			Collections.sort(docentesUfes, new ComparaPorDepartamento());
+		}
+	}
+	
+	public void gerarAlocacao(Saida output) {
+		if(output.abrirArquivoParaEscrita("/3-alocacao.csv")) {
+			output.escreverCabecalho("HEAD_ALOCACAO");
+			ArrayList<Docente> docentesUfes = new ArrayList<Docente>(quantidadeTotalDocentes());
+			for(Departamento depa : departamentos)
+				docentesUfes.addAll(depa.getDocentes());
+			Collections.sort(docentesUfes, new ComparaPorNomeECodDisciplina());
+		}
+	}
+	
+	public void gerarPpg(Saida output) {
 		
 	}
 }

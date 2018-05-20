@@ -45,8 +45,7 @@ public class Entrada {
 			} else if (linhaDeComando[i].equals("--write-only")) {
 				soEscrita = true;
 				i++;
-			}
-			else
+			} else
 				System.out.println("argumento invalido");
 			i++;
 		}
@@ -71,7 +70,7 @@ public class Entrada {
 				ex.printStackTrace();
 			}
 		}
-		return (linhas-1);	//total de linhas menos a especif da coluna
+		return (linhas - 1); // total de linhas menos a especif da coluna
 	}
 
 	public String[][] lePlanilha(int posCaminhoArquivos, int qtdCelulas) {
@@ -82,9 +81,9 @@ public class Entrada {
 		String linhaLida = "";
 		try {
 			leitor = new BufferedReader(new FileReader(caminhoArq));
-			linhaLida = leitor.readLine();	//para desconsiderar a especific da coluna
+			linhaLida = leitor.readLine(); // para desconsiderar a especific da coluna
 			for (int i = 0; (linhaLida = leitor.readLine()) != null; i++) {
-					planilha[i] = linhaLida.split(";");
+				planilha[i] = linhaLida.split(";");
 			}
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -100,6 +99,10 @@ public class Entrada {
 			}
 		}
 		return planilha;
+	}
+	
+	public String getCaminhoDosArquivos(){
+		return caminhoArquivos[0].substring(0, caminhoArquivos[0].lastIndexOf("/"));
 	}
 
 }

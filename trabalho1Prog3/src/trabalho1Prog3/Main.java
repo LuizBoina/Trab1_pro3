@@ -10,7 +10,15 @@ public class Main {
 		ufes.adicionaCursos(input.lePlanilha(3, 4));
 		ufes.adicionaProdCientificaAosDocentes(input.qtdLinhas(input.getIndexCaminhoArquivo(2)), input.lePlanilha(2, 3));
 		ufes.adicionaDisciplinas(input.qtdLinhas(input.getIndexCaminhoArquivo(4)), input.lePlanilha(4, 6));
-		System.out.println("vc e foda");
+		ufes.adicionaDiscentesAosCursos(input.qtdLinhas(input.getIndexCaminhoArquivo(1)), input.lePlanilha(1, 3));
+		ufes.adicionaOrientacaoGradAosDocentes(input.qtdLinhas(input.getIndexCaminhoArquivo(5)), input.lePlanilha(5, 4));
+		ufes.adicionaOrientacaoPosGradAosDocentes(input.qtdLinhas(input.getIndexCaminhoArquivo(6)), input.lePlanilha(6, 5));
+		ufes.adicionaCursosADocentes();
+		Saida output = new Saida(input.getCaminhoDosArquivos());
+		ufes.gerarPad(output);
+		ufes.gerarRha(output);
+		ufes.gerarAlocacao(output);
+		ufes.gerarPpg(output);
 	}
 
 }

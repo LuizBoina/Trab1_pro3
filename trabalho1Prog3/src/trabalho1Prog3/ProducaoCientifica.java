@@ -10,7 +10,7 @@ public class ProducaoCientifica {
 		try {
 			this.codigoDocente = Integer.parseInt(celulas[0]);
 		} catch (NumberFormatException e) {
-			System.out.println("Numero com formato errado!");
+			System.out.println("Erro de formatacao");
 		}
 		this.titulo = celulas[1];
 		try {
@@ -20,6 +20,10 @@ public class ProducaoCientifica {
 			this.qualificada = false;
 		}
 
+	}
+	
+	public boolean ehQualificada() {
+		return this.qualificada;
 	}
 
 	public int getCodigoDocente() {

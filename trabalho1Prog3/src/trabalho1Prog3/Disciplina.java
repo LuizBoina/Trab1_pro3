@@ -2,7 +2,7 @@ package trabalho1Prog3;
 
 public class Disciplina {
 	private int codigo;
-	private String nome;
+	private  String nome;
 	private int codigoDocente;
 	private int cHSemanal;
 	private int cHSemestral;
@@ -28,5 +28,13 @@ public class Disciplina {
 	
 	public int getCodigoDocente() {
 		return this.codigoDocente;
+	}
+	
+	public int getcHSemanal() {
+		return this.cHSemanal;
+	}
+	
+	public int getcHSemestral() {
+		return this.cHSemestral;
 	}
 }
