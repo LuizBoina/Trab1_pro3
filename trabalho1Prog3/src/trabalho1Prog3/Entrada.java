@@ -21,6 +21,14 @@ public class Entrada {
 	public String getIndexCaminhoArquivo(int pos) {
 		return this.caminhoArquivos[pos];
 	}
+	
+	public boolean getSoLeitura() {
+		return this.soLeitura;
+	}
+	
+	public boolean getSoEscrita() {
+		return this.soEscrita;
+	}
 
 	public void lerLinhaComando(String[] linhaDeComando) {
 		int i = 0;

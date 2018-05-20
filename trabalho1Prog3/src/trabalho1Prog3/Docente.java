@@ -10,6 +10,7 @@ public class Docente implements Comparable<Docente> {
 	private List<Disciplina> disciplinasDadas;
 	private List<ProducaoCientifica> prodCientificas;
 	private List<Orientacao> orientacoes;
+	
 	public Docente(String[] celulas) {
 		try {
 			this.codigo = Integer.parseInt(celulas[0]);
@@ -26,8 +27,8 @@ public class Docente implements Comparable<Docente> {
 	public int compareTo(Docente outroDocente) {
 		return this.nome.compareTo(outroDocente.nome);
 	}
-	
-	public List<Disciplina> getDisciplinasDadas(){
+
+	public List<Disciplina> getDisciplinasDadas() {
 		return this.disciplinasDadas;
 	}
 
@@ -100,11 +101,11 @@ public class Docente implements Comparable<Docente> {
 				+ String.valueOf(this.getQuantidadeProdCientidicasNQualificadas());
 	}
 
-	public ArrayList<OrientaPos> getOrientaPos(){
+	public ArrayList<OrientaPos> getOrientaPos() {
 		ArrayList oriPos = new ArrayList<OrientaPos>();
-		for(Orientacao ori:orientacoes) {
+		for (Orientacao ori : orientacoes) {
 			try {
-				OrientaPos o = (OrientaPos)ori;
+				OrientaPos o = (OrientaPos) ori;
 				oriPos.add(o);
 			} catch (ClassCastException err) {
 				err.printStackTrace();
