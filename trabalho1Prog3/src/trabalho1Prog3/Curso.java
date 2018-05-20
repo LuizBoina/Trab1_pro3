@@ -26,6 +26,10 @@ public class Curso {
 			this.ehGrad = false;
 		}
 	}
+	
+	public List<Discente> getDiscentes(){
+		return this.discentes;
+	}
 
 	public int getCodigoCurso() {
 		return this.codigo;

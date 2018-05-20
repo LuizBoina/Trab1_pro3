@@ -3,7 +3,7 @@ package trabalho1Prog3;
 import java.util.List;
 import java.util.ArrayList;
 
-public class Departamento {
+public class Departamento implements Comparable<Departamento>{
 	private String nome;
 	private List<Docente> docentes;
 
@@ -26,6 +26,10 @@ public class Departamento {
 
 	public List<Docente> getDocentes() {
 		return docentes;
+	}
+	
+	public int compareTo(Departamento outroDepartamento) {
+		return this.nome.compareTo(outroDepartamento.nome);
 	}
 
 	public void adicionaProducaoCientificaADocente(ArrayList<ProducaoCientifica> prodCientificas) {

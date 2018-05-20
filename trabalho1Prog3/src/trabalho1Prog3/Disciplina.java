@@ -1,6 +1,6 @@
 package trabalho1Prog3;
 
-public class Disciplina {
+public class Disciplina implements Comparable<Disciplina>{
 	private int codigo;
 	private  String nome;
 	private int codigoDocente;
@@ -22,8 +22,20 @@ public class Disciplina {
 		this.nome = celulas[1];
 	}
 	
+	public int getCodigo() {
+		return this.codigo;
+	}
+	
+	public String getNome() {
+		return this.nome;
+	}
+	
 	public int getCodigoCurso() {
 		return this.codigoCurso;
+	}
+	
+	public int compareTo(Disciplina outraDisciplina) {
+		return this.codigo-outraDisciplina.codigo;
 	}
 	
 	public int getCodigoDocente() {

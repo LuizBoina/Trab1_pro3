@@ -2,17 +2,14 @@ package trabalho1Prog3;
 
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Comparator;
 
-public class Docente {
+public class Docente implements Comparable<Docente> {
 	private String nome;
 	private int codigo;
 	private String departamento;
 	private List<Disciplina> disciplinasDadas;
 	private List<ProducaoCientifica> prodCientificas;
 	private List<Orientacao> orientacoes;
-	private List<Curso> cursosDados;
-	
 	public Docente(String[] celulas) {
 		try {
 			this.codigo = Integer.parseInt(celulas[0]);
@@ -24,6 +21,14 @@ public class Docente {
 		this.prodCientificas = new ArrayList<ProducaoCientifica>();
 		this.disciplinasDadas = new ArrayList<Disciplina>();
 		this.orientacoes = new ArrayList<Orientacao>();
+	}
+
+	public int compareTo(Docente outroDocente) {
+		return this.nome.compareTo(outroDocente.nome);
+	}
+	
+	public List<Disciplina> getDisciplinasDadas(){
+		return this.disciplinasDadas;
 	}
 
 	public String getDepartamento() {
@@ -95,40 +100,16 @@ public class Docente {
 				+ String.valueOf(this.getQuantidadeProdCientidicasNQualificadas());
 	}
 
-	// metodo que retorna o Curso a partir da disciplina dada
-}
-
-class ComparaPorNome implements Comparator<Docente>{
-	public int compare(Docente d1, Docente d2) {
-		return d1.getNome().compareTo(d2.getNome());
-	}
-}
-
-class ComparaPorDepartamento implements Comparator<Docente>{
-	public int compare(Docente d1, Docente d2) {
-		if(d1.getDepartamento().compareTo(d2.getDepartamento())>0)
-			return 1;
-		else if(d1.getDepartamento().compareTo(d2.getDepartamento())<0)
-				return -1;
-		else {
-			if(d1.getNome().compareTo(d2.getNome())>0)
-				return 1;
-			else if(d1.getNome().compareTo(d2.getNome())<0)
-				return -1;
-			else {
-				
+	public ArrayList<OrientaPos> getOrientaPos(){
+		ArrayList oriPos = new ArrayList<OrientaPos>();
+		for(Orientacao ori:orientacoes) {
+			try {
+				OrientaPos o = (OrientaPos)ori;
+				oriPos.add(o);
+			} catch (ClassCastException err) {
+				err.printStackTrace();
 			}
 		}
-	}
-}
-
-class ComparaPorNomeECodDisciplina implements Comparator<Docente>{
-	public int compare(Docente d1, Docente d2) {
-		if(d1.getNome().compareTo(d2.getNome())>0)
-			return 1;
-		else if(d1.getNome().compareTo(d2.getNome())<0)
-				return -1;
-		else
-			
+		return oriPos;
 	}
 }
