@@ -54,7 +54,7 @@ public class Entrada {
 			else if (linhaDeComando[i].equals("--read-only")) {
 				soLeitura = true;
 				i++;
-			} else if (linhaDeComando[i].equals("GUI")) {
+			} else if (linhaDeComando[i].equals("--GUI")) {
 				this.GUI = true;
 				i++;
 			} else if (linhaDeComando[i].equals("--write-only")) {

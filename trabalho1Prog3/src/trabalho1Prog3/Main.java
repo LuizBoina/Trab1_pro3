@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-//falta tratar erros em geral e a questao do read e write only
 public class Main {
 
 	public static void main(String[] args) {
@@ -16,11 +15,11 @@ public class Main {
 			if (input.getSoEscrita()) {
 				FileInputStream objects = new FileInputStream("dados.dat");
 				ObjectInputStream entrada = new ObjectInputStream(objects);
-			
-				//Ler os objetos no dados.dat
-				
+
+				// Ler os objetos no dados.dat
+
 				ufes = (Universidade) entrada.readObject();
-			
+
 				entrada.close();
 				objects.close();
 			} else {
@@ -30,24 +29,24 @@ public class Main {
 			if (input.getSoLeitura()) {
 				FileOutputStream objects = new FileOutputStream("dados.dat");
 				ObjectOutputStream saida = new ObjectOutputStream(objects);
-			
-				//Escrever os objetos no dados.dat
-				
+
+				// Escrever os objetos no dados.dat
+
 				saida.writeObject(ufes);
-			
+
 				saida.close();
 				objects.close();
 			} else {
 				Saida output = new Saida(input.getCaminhoDosArquivos());
 				ufes.gerarSaidas(output);
 			}
-		}catch(IOException e) {
+		} catch (IOException e) {
 			System.out.println("Erro de I/O");
-		}catch(NumberFormatException n) {
+		} catch (NumberFormatException n) {
 			System.out.println("Erro de formatação");
-		}catch(ClassNotFoundException c) {
+		} catch (ClassNotFoundException c) {
 			c.printStackTrace();
-		}catch(Exception ex) {
+		} catch (Exception ex) {
 			System.out.println(ex);
 		}
 	}

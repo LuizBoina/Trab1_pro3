@@ -12,10 +12,8 @@ public class Universidade implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private List<Departamento> departamentos;
 	private Curso[] cursos;
-	final int N_CURSOS;
 
 	public Universidade(int qtdCursos) {
-		this.N_CURSOS = qtdCursos;
 		this.cursos = new Curso[qtdCursos];
 		this.departamentos = new ArrayList<Departamento>();
 	}
@@ -24,13 +22,13 @@ public class Universidade implements Serializable {
 		criaDepartamentos(input.lePlanilha(Entrada.CAMINHO_PL_DOCENTE, 3));
 		adicionaCursos(input.lePlanilha(Entrada.CAMINHO_PL_CURSOS, 4));
 		adicionaProdCientificaAosDocentes(input.lePlanilha(Entrada.CAMINHO_PL_PRODCIENTIFICA, 3));
-		adicionaDisciplinas(input.lePlanilha(Entrada.CAMINHO_PL_DISCIPLINAS, 6));
+		adicionaDisciplinasACursosECursosADocentes(input.lePlanilha(Entrada.CAMINHO_PL_DISCIPLINAS, 6));
 		adicionaDiscentesAosCursos(input.lePlanilha(Entrada.CAMINHO_PL_DISCENTE, 3));
 		adicionaOrientacaoGradAosDocentes(input.lePlanilha(Entrada.CAMINHO_PL_ORIENTAGRAD, 4));
 		adicionaOrientacaoPosGradAosDocentes(input.lePlanilha(Entrada.CAMINHO_PL_ORIENTAPOS, 5));
 	}
 
-	public void criaDepartamentos(String[][] planilhaDocentes) {
+	private void criaDepartamentos(String[][] planilhaDocentes) {
 		int numDocentes = planilhaDocentes.length;
 		Docente[] docentes = new Docente[numDocentes];
 		for (int i = 0; i < numDocentes; i++) {
@@ -52,7 +50,7 @@ public class Universidade implements Serializable {
 		}
 	}
 
-	public void adicionaProdCientificaAosDocentes(String[][] planilhaProdCientificas) {
+	private void adicionaProdCientificaAosDocentes(String[][] planilhaProdCientificas) {
 		int numProdCientifica = planilhaProdCientificas.length;
 		ArrayList<ProducaoCientifica> prodCientificas = new ArrayList<ProducaoCientifica>(numProdCientifica);
 		for (int i = 0; i < numProdCientifica; i++)
@@ -62,11 +60,10 @@ public class Universidade implements Serializable {
 
 	}
 
-	public void adicionaCursos(String[][] planilhaCursos) {
-		for (int i = 0; i < N_CURSOS; i++) {
-			cursos[i] = new Curso(planilhaCursos[i]);
-			// adc aos docentes
-		}
+	private void adicionaCursos(String[][] planilhaCursos) {
+		int i = 0;
+		for (String[] linha : planilhaCursos)
+			cursos[i++] = new Curso(linha);
 	}
 
 	private int getPosDepartamento(String departamento) {
@@ -77,37 +74,47 @@ public class Universidade implements Serializable {
 		return -1;
 	}
 
-	public void adicionaDisciplinas(String[][] planilhaDisciplinas) {
-		int numDisciplinas = planilhaDisciplinas.length;
-		ArrayList<Disciplina> disciplinas = new ArrayList<Disciplina>(numDisciplinas);
-		for (int i = 0; i < numDisciplinas; i++) {
-			disciplinas.add(new Disciplina(planilhaDisciplinas[i]));
-			adicionaDisciplinaNoCurso(disciplinas.get(i));
-			adicionaDisciplinaADocente(disciplinas.get(i));
-		}
-	}
-
-	public void adicionaDisciplinaADocente(Disciplina disciplina) {
-		for (Departamento depa : departamentos)
-			if (depa.ehDisciplinaDadaPeloDocente(disciplina))
-				break;
-	}
-
-	private void adicionaDisciplinaNoCurso(Disciplina disciplina) {
-		for (Curso curso : cursos) {
-			if (curso.getCodigoCurso() == disciplina.getCodigoCurso()) {
-				curso.adicionaDisciplinaNoCurso(disciplina);
-				break;
+	private void adicionaDisciplinasACursosECursosADocentes(String[][] planilhaDisciplinas) {
+		List<Disciplina> disciplinas = new ArrayList<Disciplina>(planilhaDisciplinas.length);
+		for (String[] linha : planilhaDisciplinas)
+			disciplinas.add(new Disciplina(linha));
+		for (Disciplina dis : disciplinas) {
+			Curso curso = adicionaDisciplinaNoCursoERetornaCurso(dis);
+			if (curso != null) {
+				Docente docen = getDocentePelaDisciplina(dis.getCodigoDocente());
+				if (docen != null && !docen.docenteJaPossuiCurso(curso.getCodigoCurso()))
+					docen.adicionaCurso(curso);
 			}
 		}
 	}
 
-	public void adicionaDiscentesAosCursos(String[][] planilhaDiscentes) {
+	private Curso adicionaDisciplinaNoCursoERetornaCurso(Disciplina disciplina) {
+		for (Curso curso : cursos) {
+			if (curso.getCodigoCurso() == disciplina.getCodigoCurso()) {
+				curso.adicionaDisciplinaNoCurso(disciplina);
+				return curso;
+			}
+		}
+		return null;
+	}
+
+	public Docente getDocentePelaDisciplina(int codDocente) {
+		for (Departamento depa : departamentos) {
+			for (Docente docen : depa.getDocentes()) {
+				if (docen.getCodigo() == codDocente)
+					return docen;
+			}
+		}
+		return null;
+	}
+
+	private void adicionaDiscentesAosCursos(String[][] planilhaDiscentes) {
+		int qtdCursos = cursos.length;
 		int numDiscentes = planilhaDiscentes.length;
 		ArrayList<Discente> discentes = new ArrayList<Discente>(numDiscentes);
 		for (int i = 0; i < numDiscentes; i++) {
 			discentes.add(new Discente(planilhaDiscentes[i]));
-			for (int j = 0; j < N_CURSOS; j++) {
+			for (int j = 0; j < qtdCursos; j++) {
 				if (cursos[j].getCodigoCurso() == discentes.get(i).getCodigoCurso()) {
 					cursos[j].adicionaDiscenteNoCurso(discentes.get(i));
 					break;
@@ -116,7 +123,7 @@ public class Universidade implements Serializable {
 		}
 	}
 
-	public void adicionaOrientacaoGradAosDocentes(String[][] planilhaOrientacoes) {
+	private void adicionaOrientacaoGradAosDocentes(String[][] planilhaOrientacoes) {
 		int numOrientacao = planilhaOrientacoes.length;
 		ArrayList<OrientaGrad> orientaGrad = new ArrayList<OrientaGrad>(numOrientacao);
 		for (int i = 0; i < numOrientacao; i++) {
@@ -143,7 +150,7 @@ public class Universidade implements Serializable {
 		return null;
 	}
 
-	public void adicionaOrientacaoPosGradAosDocentes(String[][] planilhaOrientacoes) {
+	private void adicionaOrientacaoPosGradAosDocentes(String[][] planilhaOrientacoes) {
 		int numOrientacao = planilhaOrientacoes.length;
 		ArrayList<OrientaPos> orientaPos = new ArrayList<OrientaPos>(numOrientacao);
 		for (int i = 0; i < numOrientacao; i++) {
@@ -160,22 +167,21 @@ public class Universidade implements Serializable {
 		}
 	}
 
-	public int quantidadeTotalDocentes() {
+	private int quantidadeTotalDocentes() {
 		int qtd = 0;
 		for (Departamento dep : departamentos)
 			qtd += dep.getQuantidadeDocentes();
 		return qtd;
 	}
 
-	public int getDepartamentoSize() {
-		return this.departamentos.size();
+	public void gerarSaidas(Saida output) {
+		gerarPad(output);
+		gerarRha(output);
+		gerarAlocacao(output);
+		gerarPpg(output);
 	}
 
-	public Departamento getDepartamento(int posDepartamentoNaLista) {
-		return this.departamentos.get(posDepartamentoNaLista);
-	}
-
-	public void gerarPad(Saida output) {
+	private void gerarPad(Saida output) {
 		if (output.abrirArquivoParaEscrita("/1-pad.csv")) {
 			output.escreverCabecalho("HEAD_PAD");
 			ArrayList<Docente> docentesUfes = new ArrayList<Docente>(quantidadeTotalDocentes());
@@ -188,14 +194,7 @@ public class Universidade implements Serializable {
 		}
 	}
 
-	public void gerarSaidas(Saida output) {
-		gerarPad(output);
-		gerarRha(output);
-		gerarAlocacao(output);
-		gerarPpg(output);
-	}
-
-	public void gerarRha(Saida output) {
+	private void gerarRha(Saida output) {
 		if (output.abrirArquivoParaEscrita("/2-rha.csv")) {
 			output.escreverCabecalho("HEAD_RHA");
 			ArrayList<Docente> docentesUfes = new ArrayList<Docente>(quantidadeTotalDocentes());
@@ -203,10 +202,21 @@ public class Universidade implements Serializable {
 			for (Departamento depa : departamentos)
 				docentesUfes.addAll(depa.getDocentes());
 			Collections.sort(docentesUfes);
+			for (Docente docen : docentesUfes) {
+				List<Curso> cur = docen.getCursos();
+				Collections.sort(cur);
+				for (Curso curso : cur) {
+					String saida = docen.getDepartamento() + ";" + docen.getNome() + ";"
+							+ String.valueOf(curso.getCodigoCurso()) + ";" + curso.getNome() + ";"
+							+ String.valueOf(curso.TotalHorasDeDocente(docen.getCodigo()));
+					output.escreveString(saida);
+				}
+			}
+			output.fecharFw();
 		}
 	}
 
-	public void gerarAlocacao(Saida output) {
+	private void gerarAlocacao(Saida output) {
 		if (output.abrirArquivoParaEscrita("/3-alocacao.csv")) {
 			output.escreverCabecalho("HEAD_ALOCACAO");
 			ArrayList<Docente> docentesUfes = new ArrayList<Docente>(quantidadeTotalDocentes());
@@ -227,7 +237,7 @@ public class Universidade implements Serializable {
 		}
 	}
 
-	public void gerarPpg(Saida output) {
+	private void gerarPpg(Saida output) {
 		if (output.abrirArquivoParaEscrita("/4-ppg.csv")) {
 			output.escreverCabecalho("HEAD_PPG");
 			ArrayList<OrientaPos> ori = new ArrayList<OrientaPos>();

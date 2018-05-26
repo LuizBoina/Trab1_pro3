@@ -12,9 +12,9 @@ public class Docente implements Comparable<Docente> , Serializable{
 	private String nome;
 	private int codigo;
 	private String departamento;
-	private List<Disciplina> disciplinasDadas;
 	private List<ProducaoCientifica> prodCientificas;
 	private List<Orientacao> orientacoes;
+	private List<Curso> cursos;
 	
 	public Docente(String[] celulas) {
 		try {
@@ -25,8 +25,8 @@ public class Docente implements Comparable<Docente> , Serializable{
 		this.nome = celulas[1];
 		this.departamento = celulas[2];
 		this.prodCientificas = new ArrayList<ProducaoCientifica>();
-		this.disciplinasDadas = new ArrayList<Disciplina>();
 		this.orientacoes = new ArrayList<Orientacao>();
+		this.cursos = new ArrayList<Curso>();
 	}
 	
 	@Override
@@ -34,13 +34,24 @@ public class Docente implements Comparable<Docente> , Serializable{
 		return this.codigo == ((Docente)o).codigo;
 	}
 
+	public boolean docenteJaPossuiCurso(int codCurso) {
+		for(Curso cur : cursos) {
+			if(cur.getCodigoCurso() == codCurso)
+				return true;
+		}
+		return false;
+	}
+	
+	public void adicionaCurso(Curso cur) {
+		this.cursos.add(cur);
+	}
 	
 	public int compareTo(Docente outroDocente) {
 		return this.nome.compareTo(outroDocente.nome);
 	}
 
-	public List<Disciplina> getDisciplinasDadas() {
-		return this.disciplinasDadas;
+	public List<Curso> getCursos(){
+		return this.cursos;
 	}
 
 	public String getDepartamento() {
@@ -51,10 +62,6 @@ public class Docente implements Comparable<Docente> , Serializable{
 		return this.codigo;
 	}
 
-	public void adicionaDisciplinaALista(Disciplina disciplina) {
-		this.disciplinasDadas.add(disciplina);
-	}
-
 	public String getNome() {
 		return this.nome;
 	}
@@ -62,18 +69,37 @@ public class Docente implements Comparable<Docente> , Serializable{
 	public void adicionaOrientacaoALista(Orientacao orienta) {
 		this.orientacoes.add(orienta);
 	}
+	
+	public List<Disciplina> getDisciplinasDadas(){
+		ArrayList<Disciplina> disci = new ArrayList<Disciplina>();
+		for (Curso cur : cursos) {
+			for(Disciplina dis : cur.getDisciplinas()) {
+				if(dis.getCodigoDocente() == this.codigo)
+					disci.add(dis);
+			}
+		}
+		return disci;
+	}
 
 	public int getTotalHorasSemanaisAulas() {
 		int qtd = 0;
-		for (Disciplina dis : disciplinasDadas)
-			qtd += dis.getcHSemanal();
+		for (Curso cur : cursos) {
+			for(Disciplina dis : cur.getDisciplinas()) {
+			if(dis.getCodigoDocente() == this.codigo)	
+				qtd += dis.getcHSemanal();
+			}
+		}
 		return qtd;
 	}
 
 	public int getTotalHorasSemestraisAulas() {
 		int qtd = 0;
-		for (Disciplina dis : disciplinasDadas)
-			qtd += dis.getcHSemestral();
+		for(Curso cur: cursos) {
+			for(Disciplina dis : cur.getDisciplinas()) {
+				if(dis.getCodigoDocente() == this.codigo)
+					qtd += dis.getcHSemestral();
+			}
+		}
 		return qtd;
 	}
 
