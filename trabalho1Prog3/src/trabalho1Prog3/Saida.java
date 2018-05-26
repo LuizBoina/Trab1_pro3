@@ -6,7 +6,6 @@ import java.io.IOException;
 public class Saida {
 	private final String caminhoPastaSaida;
 	private final String NOVA_LINHA;
-	private final String DIV_CELULAS;
 	private final String HEAD_PAD = "Docente;Departamento;Horas Semanais Aula;Horas Semestrais Aula;Horas Semanais Orientação;Horas Semestrais Orientação;Produções Qualificadas;Produções Não Qualificadas";
 	private final String HEAD_RHA = "Departamento;Docente;Cód. Curso;Curso;Horas Semestrais Aula";
 	private final String HEAD_ALOCACAO = "Docente;Código;Nome;Carga Horara Semestral";
@@ -16,7 +15,6 @@ public class Saida {
 	public Saida(String caminhoPastaSaida) {
 		this.caminhoPastaSaida = caminhoPastaSaida;
 		this.NOVA_LINHA = "\n";
-		this.DIV_CELULAS = ";";
 		fw = null;
 	}
 

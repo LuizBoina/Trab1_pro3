@@ -51,15 +51,6 @@ public class Departamento implements Comparable<Departamento>, Serializable{
 		}
 	}
 
-	public boolean ehDisciplinaDadaPeloDocente(Disciplina disciplina) {
-		for (int i = 0; i < docentes.size(); i++) {
-			if (docentes.get(i).getCodigo() == disciplina.getCodigoDocente()) {
-				docentes.get(i).adicionaDisciplinaALista(disciplina);
-				return true;
-			}
-		}
-		return false;
-	}
 
 	public int achouDocenteNoDepartamento(Orientacao orienta) {
 		for (int i = 0; i < docentes.size(); i++) {
