@@ -64,6 +64,7 @@ public class Entrada {
 				System.out.println("argumento invalido");
 				i++;
 			}
+			i++;
 		}
 	}
 

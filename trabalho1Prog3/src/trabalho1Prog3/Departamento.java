@@ -21,11 +21,8 @@ public class Departamento implements Comparable<Departamento>, Serializable{
 		return this.nome;
 	}
 
-	public void setNovoDocente(Docente novoDocente) throws Exception {
-		int indexDocente = this.getPosDocente(novoDocente);
-		if(indexDocente == -1) {
-			throw new Exception("Código repetido para docente: "+novoDocente.getCodigo());
-		}this.docentes.add(novoDocente);
+	public void setNovoDocente(Docente novoDocente) {
+		this.docentes.add(novoDocente);
 	}
 
 	public int getQuantidadeDocentes() {

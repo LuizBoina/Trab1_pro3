@@ -81,61 +81,27 @@ public class Docente implements Comparable<Docente> , Serializable{
 		return disci;
 	}
 
-	public int getTotalHorasSemanaisAulas() {
-		int qtd = 0;
-		for (Curso cur : cursos) {
-			for(Disciplina dis : cur.getDisciplinas()) {
-			if(dis.getCodigoDocente() == this.codigo)	
-				qtd += dis.getcHSemanal();
-			}
-		}
-		return qtd;
-	}
-
-	public int getTotalHorasSemestraisAulas() {
-		int qtd = 0;
-		for(Curso cur: cursos) {
-			for(Disciplina dis : cur.getDisciplinas()) {
-				if(dis.getCodigoDocente() == this.codigo)
-					qtd += dis.getcHSemestral();
-			}
-		}
-		return qtd;
-	}
-
-	public int getTotalHorasSemanaisOrientacao() {
+	public int getTHSemanaisOrientacao() {
 		int qtd = 0;
 		for (Orientacao orienta : orientacoes)
 			qtd += orienta.getCHsemanal();
 		return qtd;
 	}
 
-	public int getQuantidadeProdCientificasQualificadas() {
+	public int getQtdProdCientificasQualificadas() {
 		int qtd = 0;
 		for (ProducaoCientifica prod : prodCientificas)
-			if (prod.ehQualificada())
+			if (prod.ehQualificada() == true)
 				qtd++;
 		return qtd;
 	}
 
-	public int getQuantidadeProdCientidicasNQualificadas() {
-		int qtd = 0;
-		for (ProducaoCientifica prod : prodCientificas)
-			if (!prod.ehQualificada())
-				qtd++;
-		return qtd;
+	public int getQtdProdCientificasNQualificadas() {
+		return this.prodCientificas.size()-this.getQtdProdCientificasQualificadas();
 	}
 
 	public void adicionaProdCientificaALista(ProducaoCientifica prod) {
 		this.prodCientificas.add(prod);
-	}
-
-	public String toStringParaPad() {
-		return this.nome + ";" + this.departamento + ";" + String.valueOf(this.getTotalHorasSemanaisAulas()) + ";"
-				+ String.valueOf(this.getTotalHorasSemestraisAulas()) + ";"
-				+ String.valueOf(this.getTotalHorasSemanaisOrientacao()) + ";"
-				+ String.valueOf(this.getQuantidadeProdCientificasQualificadas()) + ";"
-				+ String.valueOf(this.getQuantidadeProdCientidicasNQualificadas());
 	}
 
 	public ArrayList<OrientaPos> getOrientaPos() {

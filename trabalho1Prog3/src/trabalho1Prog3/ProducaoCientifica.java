@@ -22,6 +22,8 @@ public class ProducaoCientifica implements Serializable {
 		try {
 			if (celulas[2].equals("X"))
 				this.qualificada = true;
+			else
+				this.qualificada = false;
 		} catch (ArrayIndexOutOfBoundsException e) {
 			this.qualificada = false;
 		}
