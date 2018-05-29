@@ -1,6 +1,8 @@
 package trabalho1Prog3;
 
 import java.util.List;
+import java.util.Locale;
+import java.text.Collator;
 import java.util.ArrayList;
 
 public class Curso implements Comparable<Curso>{
@@ -61,7 +63,9 @@ public class Curso implements Comparable<Curso>{
 	}
 	
 	public int compareTo(Curso outroCurso) {
-		return this.nome.compareTo(outroCurso.nome);
+		Locale loc = new Locale("pt", "BR");
+		Collator col = Collator.getInstance(loc);
+		return col.compare(this.getNome(), outroCurso.getNome());
 	}
 
 }

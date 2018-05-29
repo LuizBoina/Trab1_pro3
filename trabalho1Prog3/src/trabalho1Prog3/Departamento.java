@@ -1,7 +1,9 @@
 package trabalho1Prog3;
 
 import java.util.List;
+import java.util.Locale;
 import java.io.Serializable;
+import java.text.Collator;
 import java.util.ArrayList;
 
 public class Departamento implements Comparable<Departamento>, Serializable{
@@ -17,9 +19,10 @@ public class Departamento implements Comparable<Departamento>, Serializable{
 		this.docentes = new ArrayList<Docente>();
 	}
 
-	public String getNomeDepartamento() {
+	public String getNome() {
 		return this.nome;
 	}
+	
 
 	public void setNovoDocente(Docente novoDocente) {
 		this.docentes.add(novoDocente);
@@ -34,18 +37,19 @@ public class Departamento implements Comparable<Departamento>, Serializable{
 	}
 	
 	public int compareTo(Departamento outroDepartamento) {
-		return this.nome.compareTo(outroDepartamento.nome);
+		Locale loc = new Locale("pt", "BR");
+		Collator col = Collator.getInstance(loc);
+		return col.compare(this.getNome(), outroDepartamento.getNome());
 	}
 
-	public void adicionaProducaoCientificaADocente(ArrayList<ProducaoCientifica> prodCientificas) {
-		for (int i = 0; i < docentes.size(); i++) {
-			for (int j = 0; j < prodCientificas.size(); j++) {
-				if (docentes.get(i).getCodigo() == prodCientificas.get(j).getCodigoDocente()) {
-					docentes.get(i).adicionaProdCientificaALista(prodCientificas.get(j));
-					prodCientificas.remove(j);
-				}
+	public boolean achouDocente(ProducaoCientifica prod) {
+		for (Docente docen : docentes) {
+			if(docen.getCodigo() == prod.getCodigoDocente()) {
+				docen.adicionaProdCientifica(prod);
+				return true;
 			}
 		}
+		return false;
 	}
 
 
@@ -61,7 +65,4 @@ public class Departamento implements Comparable<Departamento>, Serializable{
 		docentes.get(posDocente).adicionaOrientacaoALista(orienta);
 	}
 	
-	private int getPosDocente(Docente doc) {
-		return this.docentes.indexOf(doc);
-	}
 }

@@ -1,7 +1,9 @@
 package trabalho1Prog3;
 
 import java.util.List;
+import java.util.Locale;
 import java.io.Serializable;
+import java.text.Collator;
 import java.util.ArrayList;
 
 public class Docente implements Comparable<Docente> , Serializable{
@@ -47,7 +49,9 @@ public class Docente implements Comparable<Docente> , Serializable{
 	}
 	
 	public int compareTo(Docente outroDocente) {
-		return this.nome.compareTo(outroDocente.nome);
+		Locale loc = new Locale("pt", "BR");
+		Collator col = Collator.getInstance(loc);
+		return col.compare(this.getNome(), outroDocente.getNome());
 	}
 
 	public List<Curso> getCursos(){
@@ -100,7 +104,7 @@ public class Docente implements Comparable<Docente> , Serializable{
 		return this.prodCientificas.size()-this.getQtdProdCientificasQualificadas();
 	}
 
-	public void adicionaProdCientificaALista(ProducaoCientifica prod) {
+	public void adicionaProdCientifica(ProducaoCientifica prod) {
 		this.prodCientificas.add(prod);
 	}
 
