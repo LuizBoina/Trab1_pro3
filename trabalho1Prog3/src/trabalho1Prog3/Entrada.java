@@ -1,7 +1,6 @@
 package trabalho1Prog3;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Objects;
@@ -68,50 +67,33 @@ public class Entrada {
 		}
 	}
 
-	public int qtdLinhas(String caminho) {
+	public int qtdLinhas(String caminho) throws IOException {
 		int linhas = 0;
-		BufferedReader leitor = null; // tratar se a entrada n for .csv
+		BufferedReader leitor = null;
 		try {
 			leitor = new BufferedReader(new FileReader(caminho));
 			while (leitor.readLine() != null)
 				linhas++;
-		} catch (IOException e) {
-			e.printStackTrace();
 		} finally {
-			try {
-				if (leitor != null)
-					leitor.close();
-				if (leitor != null)
-					leitor.close();
-			} catch (IOException ex) {
-				ex.printStackTrace();
-			}
+			if (leitor != null)
+				leitor.close();
 		}
-		return (linhas - 1); // total de linhas menos a especif da coluna
+		return (linhas - 1);
 	}
 
-	public String[][] lePlanilha(String caminhoArq, int qtdCelulas) {
+	public String[][] lePlanilha(String caminhoArq, int qtdCelulas) throws IOException {
 		int numLinhas = qtdLinhas(caminhoArq);
 		String[][] planilha = new String[numLinhas][qtdCelulas];
 		BufferedReader leitor = null;
 		String linhaLida = "";
 		try {
 			leitor = new BufferedReader(new FileReader(caminhoArq));
-			linhaLida = leitor.readLine(); // para desconsiderar a especific da coluna
-			for (int i = 0; (linhaLida = leitor.readLine()) != null; i++) {
+			linhaLida = leitor.readLine();
+			for (int i = 0; (linhaLida = leitor.readLine()) != null; i++)
 				planilha[i] = linhaLida.split(";");
-			}
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
 		} finally {
 			if (leitor != null) {
-				try {
-					leitor.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+				leitor.close();
 			}
 		}
 		return planilha;

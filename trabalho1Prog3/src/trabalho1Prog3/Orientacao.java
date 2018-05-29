@@ -2,7 +2,7 @@ package trabalho1Prog3;
 
 import java.io.Serializable;
 
-public class Orientacao implements Serializable{
+public class Orientacao implements Serializable {
 	/**
 	 * 
 	 */
@@ -10,21 +10,20 @@ public class Orientacao implements Serializable{
 	private int codigoDocente;
 	protected Discente discente;
 	private int CHsemanal;
-	
-	public Orientacao(String codigoDocente, String CHsemanal, Discente dis) {
+
+	public Orientacao(String codigoDocente, String CHsemanal, Discente dis) throws NumberFormatException {
 		try {
 			this.codigoDocente = Integer.parseInt(codigoDocente);
 			this.CHsemanal = Integer.parseInt(CHsemanal);
-		} catch (NumberFormatException e) {
-			System.out.println("Erro de formatacao");
+		} finally {
+			this.discente = dis;
 		}
-		this.discente = dis;
 	}
 
 	public int getCodigoDocente() {
 		return this.codigoDocente;
 	}
-	
+
 	public int getCHsemanal() {
 		return this.CHsemanal;
 	}

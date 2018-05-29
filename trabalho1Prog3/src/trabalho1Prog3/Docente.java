@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.text.Collator;
 import java.util.ArrayList;
 
-public class Docente implements Comparable<Docente> , Serializable{
+public class Docente implements Comparable<Docente>, Serializable {
 	/**
 	 * 
 	 */
@@ -17,44 +17,43 @@ public class Docente implements Comparable<Docente> , Serializable{
 	private List<ProducaoCientifica> prodCientificas;
 	private List<Orientacao> orientacoes;
 	private List<Curso> cursos;
-	
-	public Docente(String[] celulas) {
+
+	public Docente(String[] celulas) throws NumberFormatException {
 		try {
 			this.codigo = Integer.parseInt(celulas[0]);
-		} catch (NumberFormatException e) {
-			System.out.println("Erro de formatacao");
+		} finally {
+			this.prodCientificas = new ArrayList<ProducaoCientifica>();
+			this.orientacoes = new ArrayList<Orientacao>();
+			this.cursos = new ArrayList<Curso>();
+			this.nome = celulas[1];
+			this.departamento = celulas[2];
 		}
-		this.nome = celulas[1];
-		this.departamento = celulas[2];
-		this.prodCientificas = new ArrayList<ProducaoCientifica>();
-		this.orientacoes = new ArrayList<Orientacao>();
-		this.cursos = new ArrayList<Curso>();
 	}
-	
+
 	@Override
 	public boolean equals(Object o) {
-		return this.codigo == ((Docente)o).codigo;
+		return this.codigo == ((Docente) o).codigo;
 	}
 
 	public boolean docenteJaPossuiCurso(int codCurso) {
-		for(Curso cur : cursos) {
-			if(cur.getCodigoCurso() == codCurso)
+		for (Curso cur : cursos) {
+			if (cur.getCodigoCurso() == codCurso)
 				return true;
 		}
 		return false;
 	}
-	
+
 	public void adicionaCurso(Curso cur) {
 		this.cursos.add(cur);
 	}
-	
+
 	public int compareTo(Docente outroDocente) {
 		Locale loc = new Locale("pt", "BR");
 		Collator col = Collator.getInstance(loc);
 		return col.compare(this.getNome(), outroDocente.getNome());
 	}
 
-	public List<Curso> getCursos(){
+	public List<Curso> getCursos() {
 		return this.cursos;
 	}
 
@@ -73,12 +72,12 @@ public class Docente implements Comparable<Docente> , Serializable{
 	public void adicionaOrientacaoALista(Orientacao orienta) {
 		this.orientacoes.add(orienta);
 	}
-	
-	public List<Disciplina> getDisciplinasDadas(){
+
+	public List<Disciplina> getDisciplinasDadas() {
 		ArrayList<Disciplina> disci = new ArrayList<Disciplina>();
 		for (Curso cur : cursos) {
-			for(Disciplina dis : cur.getDisciplinas()) {
-				if(dis.getCodigoDocente() == this.codigo)
+			for (Disciplina dis : cur.getDisciplinas()) {
+				if (dis.getCodigoDocente() == this.codigo)
 					disci.add(dis);
 			}
 		}
@@ -101,7 +100,7 @@ public class Docente implements Comparable<Docente> , Serializable{
 	}
 
 	public int getQtdProdCientificasNQualificadas() {
-		return this.prodCientificas.size()-this.getQtdProdCientificasQualificadas();
+		return this.prodCientificas.size() - this.getQtdProdCientificasQualificadas();
 	}
 
 	public void adicionaProdCientifica(ProducaoCientifica prod) {

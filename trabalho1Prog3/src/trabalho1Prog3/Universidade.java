@@ -1,7 +1,10 @@
 package trabalho1Prog3;
 
 import java.util.List;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.Serializable;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -18,46 +21,43 @@ public class Universidade implements Serializable {
 		this.departamentos = new ArrayList<Departamento>();
 	}
 
-	public void preencheDadosUniversidade(Entrada input) {
+	public void preencheDadosUniversidade(Entrada input) throws IOException, NumberFormatException, ParseException {
 		criaDepartamentos(input.lePlanilha(Entrada.CAMINHO_PL_DOCENTE, 3));
 		adicionaCursos(input.lePlanilha(Entrada.CAMINHO_PL_CURSOS, 4));
 		adicionaProdCientificaAosDocentes(input.lePlanilha(Entrada.CAMINHO_PL_PRODCIENTIFICA, 3));
-		adicionaDisciplinasACursosECursosADocentes(input.lePlanilha(Entrada.CAMINHO_PL_DISCIPLINAS, 6));
+		adicionaDisciplinasCursosECursosADocentes(input.lePlanilha(Entrada.CAMINHO_PL_DISCIPLINAS, 6));
 		adicionaDiscentesAosCursos(input.lePlanilha(Entrada.CAMINHO_PL_DISCENTE, 3));
 		adicionaOrientacaoGradAosDocentes(input.lePlanilha(Entrada.CAMINHO_PL_ORIENTAGRAD, 4));
 		adicionaOrientacaoPosGradAosDocentes(input.lePlanilha(Entrada.CAMINHO_PL_ORIENTAPOS, 5));
 	}
 
-	private void criaDepartamentos(String[][] planilhaDocentes) {
-		int numDocentes = planilhaDocentes.length;
-		Docente[] docentes = new Docente[numDocentes];
-		for (int i = 0; i < numDocentes; i++) {
-			docentes[i] = new Docente(planilhaDocentes[i]);
-			Departamento depa = this.getDepartamento(planilhaDocentes[i][2]);
+	private void criaDepartamentos(String[][] planilhaDocentes) throws NumberFormatException {
+		for (String[] str : planilhaDocentes) {
+			Departamento depa = this.getDepartamento(str[2]);
 			if (depa != null)
-				depa.setNovoDocente(docentes[i]);
+				depa.setNovoDocente(new Docente(str));
 			else {
-					Departamento novoDepartamento = new Departamento(planilhaDocentes[i][2]);
-					novoDepartamento.setNovoDocente(docentes[i]);
-					this.departamentos.add(novoDepartamento);
+				Departamento novoDepartamento = new Departamento(str[2]);
+				novoDepartamento.setNovoDocente(new Docente(str));
+				this.departamentos.add(novoDepartamento);
 			}
 		}
 	}
 
-	private void adicionaProdCientificaAosDocentes(String[][] planilhaProdCientificas) {
-		for(String[] str: planilhaProdCientificas) {
+	private void adicionaProdCientificaAosDocentes(String[][] planilhaProdCientificas) throws NumberFormatException {
+		for (String[] str : planilhaProdCientificas) {
 			percorreDepa(new ProducaoCientifica(str));
 		}
 	}
-	
+
 	private void percorreDepa(ProducaoCientifica prod) {
-		for(Departamento depa : departamentos) {
-			if(depa.achouDocente(prod))
+		for (Departamento depa : departamentos) {
+			if (depa.achouDocente(prod))
 				break;
 		}
 	}
 
-	private void adicionaCursos(String[][] planilhaCursos) {
+	private void adicionaCursos(String[][] planilhaCursos) throws NumberFormatException {
 		int i = 0;
 		for (String[] linha : planilhaCursos)
 			cursos[i++] = new Curso(linha);
@@ -71,11 +71,10 @@ public class Universidade implements Serializable {
 		return null;
 	}
 
-	private void adicionaDisciplinasACursosECursosADocentes(String[][] planilhaDisciplinas) {
-		List<Disciplina> disciplinas = new ArrayList<Disciplina>(planilhaDisciplinas.length);
-		for (String[] linha : planilhaDisciplinas)
-			disciplinas.add(new Disciplina(linha));
-		for (Disciplina dis : disciplinas) {
+	private void adicionaDisciplinasCursosECursosADocentes(String[][] planilhaDisciplinas)
+			throws NumberFormatException {
+		for (String[] str : planilhaDisciplinas) {
+			Disciplina dis = new Disciplina(str);
 			Curso curso = adicionaDisciplinaNoCursoERetornaCurso(dis);
 			if (curso != null) {
 				Docente docen = getDocentePelaDisciplina(dis.getCodigoDocente());
@@ -105,32 +104,27 @@ public class Universidade implements Serializable {
 		return null;
 	}
 
-	private void adicionaDiscentesAosCursos(String[][] planilhaDiscentes) {
-		int qtdCursos = cursos.length;
-		int numDiscentes = planilhaDiscentes.length;
-		ArrayList<Discente> discentes = new ArrayList<Discente>(numDiscentes);
-		for (int i = 0; i < numDiscentes; i++) {
-			discentes.add(new Discente(planilhaDiscentes[i]));
-			for (int j = 0; j < qtdCursos; j++) {
-				if (cursos[j].getCodigoCurso() == discentes.get(i).getCodigoCurso()) {
-					cursos[j].adicionaDiscenteNoCurso(discentes.get(i));
+	private void adicionaDiscentesAosCursos(String[][] planilhaDiscentes) throws NumberFormatException {
+		for (String[] str : planilhaDiscentes) {
+			Discente dis = new Discente(str);
+			for (Curso cur : cursos) {
+				if (cur.getCodigoCurso() == dis.getCodigoCurso()) {
+					cur.adicionaDiscenteNoCurso(dis);
 					break;
 				}
 			}
 		}
 	}
 
-	private void adicionaOrientacaoGradAosDocentes(String[][] planilhaOrientacoes) {
-		int numOrientacao = planilhaOrientacoes.length;
-		ArrayList<OrientaGrad> orientaGrad = new ArrayList<OrientaGrad>(numOrientacao);
-		for (int i = 0; i < numOrientacao; i++) {
-			int matDiscente = Integer.parseInt(planilhaOrientacoes[i][1]);
-			Discente dis = getDiscentePeloCurso(matDiscente);
-			orientaGrad.add(new OrientaGrad(planilhaOrientacoes[i], dis));
-			for (int j = 0; j < departamentos.size(); j++) {
-				int posDocenteNoDepartamento = departamentos.get(j).achouDocenteNoDepartamento(orientaGrad.get(i));
+	private void adicionaOrientacaoGradAosDocentes(String[][] planilhaOrientacoes) throws NumberFormatException {
+		for (String[] str : planilhaOrientacoes) {
+			int matDiscente = Integer.parseInt(str[1]); // ver como tratar erro de parsing aq
+			Discente dis = getDiscentePeloCurso(matDiscente); // se pa fazer de um jeito melhor
+			OrientaGrad ori = new OrientaGrad(str, dis);
+			for (Departamento depa : departamentos) {
+				int posDocenteNoDepartamento = depa.achouDocenteNoDepartamento(ori);
 				if (posDocenteNoDepartamento != -1) {
-					departamentos.get(j).adicionaOrientacaoAoDocente(posDocenteNoDepartamento, orientaGrad.get(i));
+					depa.adicionaOrientacaoAoDocente(posDocenteNoDepartamento, ori);
 					break;
 				}
 			}
@@ -147,17 +141,15 @@ public class Universidade implements Serializable {
 		return null;
 	}
 
-	private void adicionaOrientacaoPosGradAosDocentes(String[][] planilhaOrientacoes) {
-		int numOrientacao = planilhaOrientacoes.length;
-		ArrayList<OrientaPos> orientaPos = new ArrayList<OrientaPos>(numOrientacao);
-		for (int i = 0; i < numOrientacao; i++) {
-			int matDiscente = Integer.parseInt(planilhaOrientacoes[i][1]);
+	private void adicionaOrientacaoPosGradAosDocentes(String[][] plOri) throws NumberFormatException, ParseException {
+		for (String[] str : plOri) {
+			int matDiscente = Integer.parseInt(str[1]);
 			Discente dis = getDiscentePeloCurso(matDiscente);
-			orientaPos.add(new OrientaPos(planilhaOrientacoes[i], dis));
-			for (int j = 0; j < departamentos.size(); j++) {
-				int posDocenteNoDepartamento = departamentos.get(j).achouDocenteNoDepartamento(orientaPos.get(i));
+			OrientaPos ori = new OrientaPos(str, dis);
+			for (Departamento depa : departamentos) {
+				int posDocenteNoDepartamento = depa.achouDocenteNoDepartamento(ori);
 				if (posDocenteNoDepartamento != -1) {
-					departamentos.get(j).adicionaOrientacaoAoDocente(posDocenteNoDepartamento, orientaPos.get(i));
+					depa.adicionaOrientacaoAoDocente(posDocenteNoDepartamento, ori);
 					break;
 				}
 			}
@@ -210,7 +202,7 @@ public class Universidade implements Serializable {
 			Collections.sort(departamentos);
 			for (Departamento depa : departamentos) {
 				Collections.sort(depa.getDocentes());
-				for(Docente docen : depa.getDocentes()) {
+				for (Docente docen : depa.getDocentes()) {
 					Collections.sort(docen.getCursos());
 					for (Curso curso : docen.getCursos()) {
 						String saida = docen.getDepartamento() + ";" + docen.getNome() + ";"
