@@ -1,7 +1,6 @@
 package trabalho1Prog3;
 
 import java.util.List;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
 import java.text.ParseException;

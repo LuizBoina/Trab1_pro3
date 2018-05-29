@@ -1,12 +1,11 @@
 package trabalho1Prog3;
 
 import java.io.IOException;
-
-import com.sun.org.apache.xerces.internal.impl.xpath.regex.ParseException;
+import java.text.ParseException;
 
 public class Main {
 
-	public static void main(String[] args) throws java.text.ParseException {
+	public static void main(String[] args) {
 		Entrada input = new Entrada(args);
 		Universidade ufes;
 		try {
