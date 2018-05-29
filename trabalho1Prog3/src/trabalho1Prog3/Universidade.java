@@ -22,7 +22,7 @@ public class Universidade implements Serializable {
 		criaDepartamentos(input.lePlanilha(Entrada.CAMINHO_PL_DOCENTE, 3));
 		adicionaCursos(input.lePlanilha(Entrada.CAMINHO_PL_CURSOS, 4));
 		adicionaProdCientificaAosDocentes(input.lePlanilha(Entrada.CAMINHO_PL_PRODCIENTIFICA, 3));
-		adicionaDisciplinasACursosECursosADocentes(input.lePlanilha(Entrada.CAMINHO_PL_DISCIPLINAS, 6));
+		adicionaDisciplinasACursosEDisciplinasADocentes(input.lePlanilha(Entrada.CAMINHO_PL_DISCIPLINAS, 6));
 		adicionaDiscentesAosCursos(input.lePlanilha(Entrada.CAMINHO_PL_DISCENTE, 3));
 		adicionaOrientacaoGradAosDocentes(input.lePlanilha(Entrada.CAMINHO_PL_ORIENTAGRAD, 4));
 		adicionaOrientacaoPosGradAosDocentes(input.lePlanilha(Entrada.CAMINHO_PL_ORIENTAPOS, 5));
@@ -33,28 +33,31 @@ public class Universidade implements Serializable {
 		Docente[] docentes = new Docente[numDocentes];
 		for (int i = 0; i < numDocentes; i++) {
 			docentes[i] = new Docente(planilhaDocentes[i]);
-			Departamento depa = this.getDepartamento(planilhaDocentes[i][2]);
-			if (depa != null)
-				depa.setNovoDocente(docentes[i]);
-			else {
+			int indexDepartamentoLista = this.getPosDepartamento(planilhaDocentes[i][2]);
+			if (indexDepartamentoLista != -1) {
+				try {
+					this.departamentos.get(indexDepartamentoLista).setNovoDocente(docentes[i]);
+				} catch (Exception e) {
+				}
+			} else {
+				try {
 					Departamento novoDepartamento = new Departamento(planilhaDocentes[i][2]);
 					novoDepartamento.setNovoDocente(docentes[i]);
 					this.departamentos.add(novoDepartamento);
+				} catch (Exception e) {
+				}
 			}
 		}
 	}
 
 	private void adicionaProdCientificaAosDocentes(String[][] planilhaProdCientificas) {
-		for(String[] str: planilhaProdCientificas) {
-			percorreDepa(new ProducaoCientifica(str));
-		}
-	}
-	
-	private void percorreDepa(ProducaoCientifica prod) {
-		for(Departamento depa : departamentos) {
-			if(depa.achouDocente(prod))
-				break;
-		}
+		int numProdCientifica = planilhaProdCientificas.length;
+		ArrayList<ProducaoCientifica> prodCientificas = new ArrayList<ProducaoCientifica>(numProdCientifica);
+		for (int i = 0; i < numProdCientifica; i++)
+			prodCientificas.add(new ProducaoCientifica(planilhaProdCientificas[i]));
+		for (int i = 0; i < departamentos.size(); i++)
+			departamentos.get(i).adicionaProducaoCientificaADocente(prodCientificas);
+
 	}
 
 	private void adicionaCursos(String[][] planilhaCursos) {
@@ -63,39 +66,29 @@ public class Universidade implements Serializable {
 			cursos[i++] = new Curso(linha);
 	}
 
-	private Departamento getDepartamento(String departamento) {
-		for (Departamento depa : departamentos) {
-			if (depa.getNome().equals(departamento))
-				return depa;
+	private int getPosDepartamento(String departamento) {
+		for (int i = 0; i < departamentos.size(); i++) {
+			if (departamentos.get(i).getNomeDepartamento().equals(departamento))
+				return i;
 		}
-		return null;
+		return -1;
 	}
 
-	private void adicionaDisciplinasACursosECursosADocentes(String[][] planilhaDisciplinas) {
+	private void adicionaDisciplinasACursosEDisciplinasADocentes(String[][] planilhaDisciplinas) {
 		List<Disciplina> disciplinas = new ArrayList<Disciplina>(planilhaDisciplinas.length);
 		for (String[] linha : planilhaDisciplinas)
 			disciplinas.add(new Disciplina(linha));
 		for (Disciplina dis : disciplinas) {
-			Curso curso = adicionaDisciplinaNoCursoERetornaCurso(dis);
-			if (curso != null) {
-				Docente docen = getDocentePelaDisciplina(dis.getCodigoDocente());
-				if (docen != null && !docen.docenteJaPossuiCurso(curso.getCodigoCurso()))
-					docen.adicionaCurso(curso);
-			}
+			for (Curso curso : cursos)
+				curso.adicionaDisciplinaNoCurso(dis);
+			Docente docen = getDocentePelaDisciplina(dis.getCodigoDocente());
+			if(docen != null)
+			if (docen != null && !docen.docenteJaPossuiDisciplina(dis.getCodigo()))
+				docen.adicionaDisciplina(dis);
 		}
 	}
 
-	private Curso adicionaDisciplinaNoCursoERetornaCurso(Disciplina disciplina) {
-		for (Curso curso : cursos) {
-			if (curso.getCodigoCurso() == disciplina.getCodigoCurso()) {
-				curso.adicionaDisciplinaNoCurso(disciplina);
-				return curso;
-			}
-		}
-		return null;
-	}
-
-	private Docente getDocentePelaDisciplina(int codDocente) {
+	public Docente getDocentePelaDisciplina(int codDocente) {
 		for (Departamento depa : departamentos) {
 			for (Docente docen : depa.getDocentes()) {
 				if (docen.getCodigo() == codDocente)
@@ -179,27 +172,14 @@ public class Universidade implements Serializable {
 	}
 
 	private void gerarPad(Saida output) {
-		int tHSemanais;
-		int tHSemestrais;
 		if (output.abrirArquivoParaEscrita("/1-pad.csv")) {
 			output.escreverCabecalho("HEAD_PAD");
 			ArrayList<Docente> docentesUfes = new ArrayList<Docente>(quantidadeTotalDocentes());
 			for (Departamento depa : departamentos)
 				docentesUfes.addAll(depa.getDocentes());
 			Collections.sort(docentesUfes);
-			for (Docente docen : docentesUfes) {
-				List<Disciplina> disci = docen.getDisciplinasDadas();
-				tHSemanais = tHSemestrais = 0;
-				for (Disciplina dis : disci) {
-					tHSemanais += dis.getcHSemanal();
-					tHSemestrais += dis.getcHSemestral();
-				}
-				String saida = docen.getNome() + ";" + docen.getDepartamento() + ";" + String.valueOf(tHSemanais) + ";"
-						+ String.valueOf(tHSemestrais) + ";" + String.valueOf(docen.getTHSemanaisOrientacao()) + ";"
-						+ String.valueOf(docen.getQtdProdCientificasQualificadas()) + ";"
-						+ String.valueOf(docen.getQtdProdCientificasNQualificadas());
-				output.escreveString(saida);
-			}
+			for (Docente docen : docentesUfes)
+				output.escreveString(docen.toStringParaPad());
 			output.fecharFw();
 		}
 	}
@@ -207,17 +187,19 @@ public class Universidade implements Serializable {
 	private void gerarRha(Saida output) {
 		if (output.abrirArquivoParaEscrita("/2-rha.csv")) {
 			output.escreverCabecalho("HEAD_RHA");
+			ArrayList<Docente> docentesUfes = new ArrayList<Docente>(quantidadeTotalDocentes());
 			Collections.sort(departamentos);
-			for (Departamento depa : departamentos) {
-				Collections.sort(depa.getDocentes());
-				for(Docente docen : depa.getDocentes()) {
-					Collections.sort(docen.getCursos());
-					for (Curso curso : docen.getCursos()) {
-						String saida = docen.getDepartamento() + ";" + docen.getNome() + ";"
-								+ String.valueOf(curso.getCodigoCurso()) + ";" + curso.getNome() + ";"
-								+ String.valueOf(curso.TotalHorasDeDocente(docen.getCodigo()));
-						output.escreveString(saida);
-					}
+			for (Departamento depa : departamentos)
+				docentesUfes.addAll(depa.getDocentes());
+			Collections.sort(docentesUfes);
+			for (Docente docen : docentesUfes) {
+				List<Curso> cur = docen.getCursos();
+				Collections.sort(cur);
+				for (Curso curso : cur) {
+					String saida = docen.getDepartamento() + ";" + docen.getNome() + ";"
+							+ String.valueOf(curso.getCodigoCurso()) + ";" + curso.getNome() + ";"
+							+ String.valueOf(curso.TotalHorasDeDocente(docen.getCodigo()));
+					output.escreveString(saida);
 				}
 			}
 			output.fecharFw();

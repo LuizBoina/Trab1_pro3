@@ -1,9 +1,7 @@
 package trabalho1Prog3;
 
 import java.util.List;
-import java.util.Locale;
 import java.io.Serializable;
-import java.text.Collator;
 import java.util.ArrayList;
 
 public class Docente implements Comparable<Docente> , Serializable{
@@ -16,7 +14,7 @@ public class Docente implements Comparable<Docente> , Serializable{
 	private String departamento;
 	private List<ProducaoCientifica> prodCientificas;
 	private List<Orientacao> orientacoes;
-	private List<Curso> cursos;
+	private List<Disciplina> disciplinas;
 	
 	public Docente(String[] celulas) {
 		try {
@@ -28,7 +26,7 @@ public class Docente implements Comparable<Docente> , Serializable{
 		this.departamento = celulas[2];
 		this.prodCientificas = new ArrayList<ProducaoCientifica>();
 		this.orientacoes = new ArrayList<Orientacao>();
-		this.cursos = new ArrayList<Curso>();
+		this.disciplinas = new ArrayList<Disciplina>();
 	}
 	
 	@Override
@@ -36,26 +34,24 @@ public class Docente implements Comparable<Docente> , Serializable{
 		return this.codigo == ((Docente)o).codigo;
 	}
 
-	public boolean docenteJaPossuiCurso(int codCurso) {
-		for(Curso cur : cursos) {
-			if(cur.getCodigoCurso() == codCurso)
+	public boolean docenteJaPossuiDisciplina(int codDisciplina) {
+		for(Disciplina disc : disciplinas) {
+			if(disc.getCodigo() == codDisciplina)
 				return true;
 		}
 		return false;
 	}
 	
-	public void adicionaCurso(Curso cur) {
-		this.cursos.add(cur);
+	public void adicionaDisciplina(Disciplina disc) {
+		this.disciplinas.add(disc);
 	}
 	
 	public int compareTo(Docente outroDocente) {
-		Locale loc = new Locale("pt", "BR");
-		Collator col = Collator.getInstance(loc);
-		return col.compare(this.getNome(), outroDocente.getNome());
+		return this.nome.compareTo(outroDocente.nome);
 	}
 
-	public List<Curso> getCursos(){
-		return this.cursos;
+	public List<Disciplina> getdisciplinas(){
+		return this.disciplinas;
 	}
 
 	public String getDepartamento() {
@@ -75,14 +71,7 @@ public class Docente implements Comparable<Docente> , Serializable{
 	}
 	
 	public List<Disciplina> getDisciplinasDadas(){
-		ArrayList<Disciplina> disci = new ArrayList<Disciplina>();
-		for (Curso cur : cursos) {
-			for(Disciplina dis : cur.getDisciplinas()) {
-				if(dis.getCodigoDocente() == this.codigo)
-					disci.add(dis);
-			}
-		}
-		return disci;
+		return this.disciplinas;
 	}
 
 	public int getTHSemanaisOrientacao() {
@@ -90,6 +79,14 @@ public class Docente implements Comparable<Docente> , Serializable{
 		for (Orientacao orienta : orientacoes)
 			qtd += orienta.getCHsemanal();
 		return qtd;
+	}
+	
+	public int getTHSemanaisAulas() {
+		int hrs = 0;
+		for(Disciplina dis : disciplinas) {
+			hrs += dis.getcHSemanal();
+		}
+		return hrs;
 	}
 
 	public int getQtdProdCientificasQualificadas() {
@@ -104,7 +101,7 @@ public class Docente implements Comparable<Docente> , Serializable{
 		return this.prodCientificas.size()-this.getQtdProdCientificasQualificadas();
 	}
 
-	public void adicionaProdCientifica(ProducaoCientifica prod) {
+	public void adicionaProdCientificaALista(ProducaoCientifica prod) {
 		this.prodCientificas.add(prod);
 	}
 
@@ -119,5 +116,16 @@ public class Docente implements Comparable<Docente> , Serializable{
 			}
 		}
 		return oriPos;
+	}
+	
+	public String toStringParaPad() {
+		String docente = new String();
+		docente.concat(nome+";");
+		docente.concat(departamento+";");
+		docente.concat(new Integer(getTHSemanaisAulas()).toString() + ";");
+		docente.concat(new Integer(getTHSemanaisOrientacao()).toString() + ";");
+		docente.concat(new Integer(getQtdProdCientificasQualificadas()).toString() + ";");
+		docente.concat(new Integer(getQtdProdCientificasNQualificadas()).toString());
+		return docente;
 	}
 }

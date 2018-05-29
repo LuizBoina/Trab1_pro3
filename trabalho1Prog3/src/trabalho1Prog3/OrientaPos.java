@@ -1,8 +1,6 @@
 package trabalho1Prog3;
 
 import java.util.Date;
-import java.util.Locale;
-import java.text.Collator;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
@@ -37,12 +35,9 @@ public class OrientaPos extends Orientacao implements Comparable<OrientaPos> {
 	}
 	
 	public int compareTo(OrientaPos outraOrientaPos) {
-		Locale loc = new Locale("pt", "BR");
-		Collator col = Collator.getInstance(loc);
-		int result = col.compare(this.getPrograma(), outraOrientaPos.getPrograma());
-		if(result>0)
+		if(this.programa.compareTo(outraOrientaPos.programa)>0)
 			return 1;
-		else if(result<0)
+		else if(this.programa.compareTo(outraOrientaPos.programa)<0)
 			return -1;
 		else {
 			if(this.dataIngresso.compareTo(outraOrientaPos.dataIngresso)>0)
@@ -50,8 +45,7 @@ public class OrientaPos extends Orientacao implements Comparable<OrientaPos> {
 			else if(this.dataIngresso.compareTo(outraOrientaPos.dataIngresso)<0)
 				return -1;
 			else {
-				int resultDiscente = col.compare(super.discente.getNome(), outraOrientaPos.discente.getNome());
-				if(resultDiscente>=0)
+				if(super.discente.getNome().compareTo(outraOrientaPos.discente.getNome())>=0)
 					return 1;
 				else
 					return -1;

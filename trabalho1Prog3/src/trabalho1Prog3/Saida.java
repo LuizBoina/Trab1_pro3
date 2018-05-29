@@ -6,10 +6,10 @@ import java.io.IOException;
 public class Saida {
 	private final String caminhoPastaSaida;
 	private final String NOVA_LINHA;
-	private final String HEAD_PAD = "Docente;Departamento;Horas Semanais Aula;Horas Semestrais Aula;Horas Semanais Orientação;Produções Qualificadas;Produções Não Qualificadas";
+	private final String HEAD_PAD = "Docente;Departamento;Horas Semanais Aula;Horas Semestrais Aula;Horas Semanais Orientação;Horas Semestrais Orientação;Produções Qualificadas;Produções Não Qualificadas";
 	private final String HEAD_RHA = "Departamento;Docente;Cód. Curso;Curso;Horas Semestrais Aula";
-	private final String HEAD_ALOCACAO = "Docente;Código;Nome;Carga Horária Semestral";
-	private final String HEAD_PPG = "Nome do Programa;Data de Ingresso;Matrícula;Nome";
+	private final String HEAD_ALOCACAO = "Docente;Código;Nome;Carga Horara Semestral";
+	private final String HEAD_PPG = "Nome do Programa;Data de Ingresso;Matricula;Nome";
 	FileWriter fw;
 
 	public Saida(String caminhoPastaSaida) {
