@@ -12,12 +12,9 @@ public class Discente implements Serializable {
 	private int codigoCurso;
 
 	public Discente(String[] celulas) throws NumberFormatException {
-		try {
-			this.matricula = Integer.parseInt(celulas[0]);
-			this.codigoCurso = Integer.parseInt(celulas[2]);
-		} finally {
-			this.nome = celulas[1];
-		}
+		this.matricula = Integer.parseInt(celulas[0]);
+		this.codigoCurso = Integer.parseInt(celulas[2]);
+		this.nome = celulas[1];
 	}
 
 	public int getMatricula() {

@@ -11,14 +11,14 @@ public class ProducaoCientifica implements Serializable {
 	private String titulo;
 	private boolean qualificada;
 
-	public ProducaoCientifica(String[] celulas) throws NumberFormatException{
-		
-		try {
-			this.codigoDocente = Integer.parseInt(celulas[0]);
-		} finally {
-			this.titulo = celulas[1];
+	public ProducaoCientifica(String[] celulas) throws NumberFormatException {
+		this.codigoDocente = Integer.parseInt(celulas[0]);
+		this.titulo = celulas[1];
+		try {//melhorar isso talvez
 			if (celulas[2].equals("X"))
 				this.qualificada = true;
+		}catch(ArrayIndexOutOfBoundsException e) {
+			this.qualificada = false;
 		}
 	}
 

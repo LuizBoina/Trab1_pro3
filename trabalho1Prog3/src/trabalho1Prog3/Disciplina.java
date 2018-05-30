@@ -15,16 +15,12 @@ public class Disciplina implements Comparable<Disciplina>, Serializable {
 	private int codigoCurso;
 
 	public Disciplina(String[] celulas) throws NumberFormatException {
-		try {
-			this.codigo = Integer.parseInt(celulas[0]);
-			this.codigoDocente = Integer.parseInt(celulas[2]);
-			this.cHSemanal = Integer.parseInt(celulas[3]);
-			this.cHSemestral = Integer.parseInt(celulas[4]);
-			this.codigoCurso = Integer.parseInt(celulas[5]);
-
-		} finally {
-			this.nome = celulas[1];
-		}
+		this.codigo = Integer.parseInt(celulas[0]);
+		this.codigoDocente = Integer.parseInt(celulas[2]);
+		this.cHSemanal = Integer.parseInt(celulas[3]);
+		this.cHSemestral = Integer.parseInt(celulas[4]);
+		this.codigoCurso = Integer.parseInt(celulas[5]);
+		this.nome = celulas[1];
 	}
 
 	public int getCodigo() {

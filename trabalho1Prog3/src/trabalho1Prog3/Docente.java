@@ -19,15 +19,12 @@ public class Docente implements Comparable<Docente>, Serializable {
 	private List<Curso> cursos;
 
 	public Docente(String[] celulas) throws NumberFormatException {
-		try {
-			this.codigo = Integer.parseInt(celulas[0]);
-		} finally {
-			this.prodCientificas = new ArrayList<ProducaoCientifica>();
-			this.orientacoes = new ArrayList<Orientacao>();
-			this.cursos = new ArrayList<Curso>();
-			this.nome = celulas[1];
-			this.departamento = celulas[2];
-		}
+		this.codigo = Integer.parseInt(celulas[0]);
+		this.prodCientificas = new ArrayList<ProducaoCientifica>();
+		this.orientacoes = new ArrayList<Orientacao>();
+		this.cursos = new ArrayList<Curso>();
+		this.nome = celulas[1];
+		this.departamento = celulas[2];
 	}
 
 	@Override
@@ -110,12 +107,10 @@ public class Docente implements Comparable<Docente>, Serializable {
 	public ArrayList<OrientaPos> getOrientaPos() {
 		ArrayList oriPos = new ArrayList<OrientaPos>();
 		for (Orientacao ori : orientacoes) {
-			try {
+			try {//melhorar isso talvez
 				OrientaPos o = (OrientaPos) ori;
 				oriPos.add(o);
-			} catch (ClassCastException err) {
-				err.printStackTrace();
-			}
+			} catch (ClassCastException err) {}
 		}
 		return oriPos;
 	}

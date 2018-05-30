@@ -5,10 +5,7 @@ public class OrientaGrad extends Orientacao {
 
 	public OrientaGrad(String[] celulas, Discente dis) throws NumberFormatException {
 		super(celulas[0], celulas[3], dis);
-		try {
-			this.codigoCurso = Integer.parseInt(celulas[2]);
-		} finally {
-		}
+		this.codigoCurso = Integer.parseInt(celulas[2]);
 	}
 
 }

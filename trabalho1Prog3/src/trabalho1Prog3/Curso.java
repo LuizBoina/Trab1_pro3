@@ -13,14 +13,15 @@ public class Curso implements Comparable<Curso> {
 	private List<Discente> discentes;
 
 	public Curso(String[] celulas) throws NumberFormatException {
-		try {
-			this.codigo = Integer.parseInt(celulas[0]);
-		} finally {
-			discentes = new ArrayList<Discente>();
-			disciplinas = new ArrayList<Disciplina>();
-			this.nome = celulas[1];
+		this.codigo = Integer.parseInt(celulas[0]);
+		discentes = new ArrayList<Discente>();
+		disciplinas = new ArrayList<Disciplina>();
+		this.nome = celulas[1];
+		try {//melhorar isso talvez
 			if (celulas[2].equals("X"))
 				this.ehGrad = true;
+		}catch(ArrayIndexOutOfBoundsException err) {
+			this.ehGrad = false;
 		}
 	}
 

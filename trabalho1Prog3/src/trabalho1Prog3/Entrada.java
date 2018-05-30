@@ -1,12 +1,14 @@
 package trabalho1Prog3;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.Objects;
 
 public class Entrada {
-	private boolean GUI;
+	//private boolean GUI;
 	private boolean soLeitura;
 	private boolean soEscrita;
 	public static String CAMINHO_PL_DOCENTE;
@@ -16,6 +18,7 @@ public class Entrada {
 	public static String CAMINHO_PL_DISCIPLINAS;
 	public static String CAMINHO_PL_ORIENTAGRAD;
 	public static String CAMINHO_PL_ORIENTAPOS;
+	public static String CAMINHO_DADOS;
 
 	public Entrada(String[] args) {
 		this.lerLinhaComando(args);
@@ -29,9 +32,9 @@ public class Entrada {
 		return this.soEscrita;
 	}
 
-	public boolean getGUI() {
+	/*public boolean getGUI() {
 		return this.GUI;
-	}
+	}*/
 
 	public void lerLinhaComando(String[] linhaDeComando) {
 		int i = 0;
@@ -53,15 +56,14 @@ public class Entrada {
 			else if (linhaDeComando[i].equals("--read-only")) {
 				soLeitura = true;
 				i++;
-			} else if (linhaDeComando[i].equals("--GUI")) {
+			}/* else if (linhaDeComando[i].equals("--GUI")) {
 				this.GUI = true;
 				i++;
-			} else if (linhaDeComando[i].equals("--write-only")) {
+			}*/
+			else if (linhaDeComando[i].equals("--write-only")) {
 				this.soEscrita = true;
-				i++;
-			} else {
-				System.out.println("argumento invalido");
-				i++;
+				CAMINHO_DADOS = linhaDeComando[++i];
+				break;
 			}
 			i++;
 		}
@@ -70,14 +72,11 @@ public class Entrada {
 	public int qtdLinhas(String caminho) throws IOException {
 		int linhas = 0;
 		BufferedReader leitor = null;
-		try {
-			leitor = new BufferedReader(new FileReader(caminho));
-			while (leitor.readLine() != null)
-				linhas++;
-		} finally {
-			if (leitor != null)
-				leitor.close();
-		}
+		leitor = new BufferedReader(new FileReader(caminho));
+		while (leitor.readLine() != null)
+			linhas++;
+		if (leitor != null)
+			leitor.close();
 		return (linhas - 1);
 	}
 
@@ -86,21 +85,26 @@ public class Entrada {
 		String[][] planilha = new String[numLinhas][qtdCelulas];
 		BufferedReader leitor = null;
 		String linhaLida = "";
-		try {
-			leitor = new BufferedReader(new FileReader(caminhoArq));
-			linhaLida = leitor.readLine();
-			for (int i = 0; (linhaLida = leitor.readLine()) != null; i++)
-				planilha[i] = linhaLida.split(";");
-		} finally {
-			if (leitor != null) {
-				leitor.close();
-			}
+		leitor = new BufferedReader(new FileReader(caminhoArq));
+		linhaLida = leitor.readLine();
+		for (int i = 0; (linhaLida = leitor.readLine()) != null; i++)
+			planilha[i] = linhaLida.split(";");
+		if (leitor != null) {
+			leitor.close();
 		}
 		return planilha;
 	}
 
 	public String getCaminhoDosArquivos() {
 		return CAMINHO_PL_ORIENTAPOS.substring(0, CAMINHO_PL_ORIENTAPOS.lastIndexOf("/"));
+	}
+	
+	public Universidade deserializandoDados() throws Exception {
+		FileInputStream fin = new FileInputStream(CAMINHO_DADOS);
+		ObjectInputStream ois = new ObjectInputStream(fin);
+		Universidade uni = (Universidade) ois.readObject();
+		ois.close();
+		return uni;
 	}
 
 }

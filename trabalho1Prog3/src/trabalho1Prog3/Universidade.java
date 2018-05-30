@@ -6,6 +6,8 @@ import java.io.Serializable;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
 
 public class Universidade implements Serializable {
 	/**
@@ -70,9 +72,8 @@ public class Universidade implements Serializable {
 		return null;
 	}
 
-	private void adicionaDisciplinasCursosECursosADocentes(String[][] planilhaDisciplinas)
-			throws NumberFormatException {
-		for (String[] str : planilhaDisciplinas) {
+	private void adicionaDisciplinasCursosECursosADocentes(String[][] plDisci) throws NumberFormatException {
+		for (String[] str : plDisci) {
 			Disciplina dis = new Disciplina(str);
 			Curso curso = adicionaDisciplinaNoCursoERetornaCurso(dis);
 			if (curso != null) {
@@ -115,10 +116,10 @@ public class Universidade implements Serializable {
 		}
 	}
 
-	private void adicionaOrientacaoGradAosDocentes(String[][] planilhaOrientacoes) throws NumberFormatException {
-		for (String[] str : planilhaOrientacoes) {
-			int matDiscente = Integer.parseInt(str[1]); // ver como tratar erro de parsing aq
-			Discente dis = getDiscentePeloCurso(matDiscente); // se pa fazer de um jeito melhor
+	private void adicionaOrientacaoGradAosDocentes(String[][] plOri) throws NumberFormatException {
+		for (String[] str : plOri) {
+			int matDiscente = Integer.parseInt(str[1]);
+			Discente dis = getDiscentePeloCurso(matDiscente);
 			OrientaGrad ori = new OrientaGrad(str, dis);
 			for (Departamento depa : departamentos) {
 				int posDocenteNoDepartamento = depa.achouDocenteNoDepartamento(ori);
@@ -162,95 +163,97 @@ public class Universidade implements Serializable {
 		return qtd;
 	}
 
-	public void gerarSaidas(Saida output) {
+	public void serializarDados(String caminhoSaida) throws IOException {
+		FileOutputStream fout = new FileOutputStream(caminhoSaida + "/dados.dat");
+		ObjectOutputStream oos = new ObjectOutputStream(fout);
+		oos.writeObject(this);
+		oos.close();
+	}
+
+	public void gerarSaidas(Saida output) throws IOException {
 		gerarPad(output);
 		gerarRha(output);
 		gerarAlocacao(output);
 		gerarPpg(output);
 	}
 
-	private void gerarPad(Saida output) {
+	private void gerarPad(Saida output) throws IOException {
 		int tHSemanais;
 		int tHSemestrais;
-		if (output.abrirArquivoParaEscrita("/1-pad.csv")) {
-			output.escreverCabecalho("HEAD_PAD");
-			ArrayList<Docente> docentesUfes = new ArrayList<Docente>(quantidadeTotalDocentes());
-			for (Departamento depa : departamentos)
-				docentesUfes.addAll(depa.getDocentes());
-			Collections.sort(docentesUfes);
-			for (Docente docen : docentesUfes) {
-				List<Disciplina> disci = docen.getDisciplinasDadas();
-				tHSemanais = tHSemestrais = 0;
-				for (Disciplina dis : disci) {
-					tHSemanais += dis.getcHSemanal();
-					tHSemestrais += dis.getcHSemestral();
-				}
-				String saida = docen.getNome() + ";" + docen.getDepartamento() + ";" + String.valueOf(tHSemanais) + ";"
-						+ String.valueOf(tHSemestrais) + ";" + String.valueOf(docen.getTHSemanaisOrientacao()) + ";"
-						+ String.valueOf(docen.getQtdProdCientificasQualificadas()) + ";"
-						+ String.valueOf(docen.getQtdProdCientificasNQualificadas());
-				output.escreveString(saida);
+		output.abrirArquivoParaEscrita("/1-pad.csv");
+		output.escreveString(Saida.HEAD_PAD);
+		ArrayList<Docente> docentesUfes = new ArrayList<Docente>(quantidadeTotalDocentes());
+		for (Departamento depa : departamentos)
+			docentesUfes.addAll(depa.getDocentes());
+		Collections.sort(docentesUfes);
+		for (Docente docen : docentesUfes) {
+			List<Disciplina> disci = docen.getDisciplinasDadas();
+			tHSemanais = tHSemestrais = 0;
+			for (Disciplina dis : disci) {
+				tHSemanais += dis.getcHSemanal();
+				tHSemestrais += dis.getcHSemestral();
 			}
-			output.fecharFw();
+			String saida = docen.getNome() + ";" + docen.getDepartamento() + ";" + String.valueOf(tHSemanais) + ";"
+					+ String.valueOf(tHSemestrais) + ";" + String.valueOf(docen.getTHSemanaisOrientacao()) + ";"
+					+ String.valueOf(docen.getQtdProdCientificasQualificadas()) + ";"
+					+ String.valueOf(docen.getQtdProdCientificasNQualificadas());
+			output.escreveString(saida);
 		}
+		output.fecharFw();
 	}
 
-	private void gerarRha(Saida output) {
-		if (output.abrirArquivoParaEscrita("/2-rha.csv")) {
-			output.escreverCabecalho("HEAD_RHA");
-			Collections.sort(departamentos);
-			for (Departamento depa : departamentos) {
-				Collections.sort(depa.getDocentes());
-				for (Docente docen : depa.getDocentes()) {
-					Collections.sort(docen.getCursos());
-					for (Curso curso : docen.getCursos()) {
-						String saida = docen.getDepartamento() + ";" + docen.getNome() + ";"
-								+ String.valueOf(curso.getCodigoCurso()) + ";" + curso.getNome() + ";"
-								+ String.valueOf(curso.TotalHorasDeDocente(docen.getCodigo()));
-						output.escreveString(saida);
-					}
-				}
-			}
-			output.fecharFw();
-		}
-	}
-
-	private void gerarAlocacao(Saida output) {
-		if (output.abrirArquivoParaEscrita("/3-alocacao.csv")) {
-			output.escreverCabecalho("HEAD_ALOCACAO");
-			ArrayList<Docente> docentesUfes = new ArrayList<Docente>(quantidadeTotalDocentes());
-			for (Departamento depa : departamentos)
-				docentesUfes.addAll(depa.getDocentes());
-			Collections.sort(docentesUfes);
-			for (Docente docen : docentesUfes) {
-				List<Disciplina> disciplinas = docen.getDisciplinasDadas();
-				Collections.sort(disciplinas);
-				for (Disciplina dis : disciplinas) {
-					String saida = docen.getNome() + ";" + String.valueOf(dis.getCodigo()) + ";" + dis.getNome() + ";"
-							+ String.valueOf(dis.getcHSemestral());
+	private void gerarRha(Saida output) throws IOException {
+		output.abrirArquivoParaEscrita("/2-rha.csv");
+		output.escreveString(Saida.HEAD_RHA);
+		Collections.sort(departamentos);
+		for (Departamento depa : departamentos) {
+			Collections.sort(depa.getDocentes());
+			for (Docente docen : depa.getDocentes()) {
+				Collections.sort(docen.getCursos());
+				for (Curso curso : docen.getCursos()) {
+					String saida = docen.getDepartamento() + ";" + docen.getNome() + ";"
+							+ String.valueOf(curso.getCodigoCurso()) + ";" + curso.getNome() + ";"
+							+ String.valueOf(curso.TotalHorasDeDocente(docen.getCodigo()));
 					output.escreveString(saida);
 				}
 			}
-			output.fecharFw();
-
 		}
+		output.fecharFw();
 	}
 
-	private void gerarPpg(Saida output) {
-		if (output.abrirArquivoParaEscrita("/4-ppg.csv")) {
-			output.escreverCabecalho("HEAD_PPG");
-			ArrayList<OrientaPos> ori = new ArrayList<OrientaPos>();
-			for (Departamento dep : departamentos) {
-				for (Docente doc : dep.getDocentes())
-					ori.addAll(doc.getOrientaPos());
-			}
-			Collections.sort(ori);
-			for (OrientaPos o : ori) {
-				String saida = o.getPrograma() + ";" + o.getDateString() + ";"
-						+ String.valueOf(o.getMatriculaDiscente()) + ";" + o.getNomeDiscente();
+	private void gerarAlocacao(Saida output) throws IOException {
+		output.abrirArquivoParaEscrita("/3-alocacao.csv");
+		output.escreveString(Saida.HEAD_ALOCACAO);
+		ArrayList<Docente> docentesUfes = new ArrayList<Docente>(quantidadeTotalDocentes());
+		for (Departamento depa : departamentos)
+			docentesUfes.addAll(depa.getDocentes());
+		Collections.sort(docentesUfes);
+		for (Docente docen : docentesUfes) {
+			List<Disciplina> disciplinas = docen.getDisciplinasDadas();
+			Collections.sort(disciplinas);
+			for (Disciplina dis : disciplinas) {
+				String saida = docen.getNome() + ";" + String.valueOf(dis.getCodigo()) + ";" + dis.getNome() + ";"
+						+ String.valueOf(dis.getcHSemestral());
 				output.escreveString(saida);
 			}
-			output.fecharFw();
 		}
+		output.fecharFw();
+	}
+
+	private void gerarPpg(Saida output) throws IOException {
+		output.abrirArquivoParaEscrita("/4-ppg.csv");
+		output.escreveString(Saida.HEAD_PPG);
+		ArrayList<OrientaPos> ori = new ArrayList<OrientaPos>();
+		for (Departamento dep : departamentos) {
+			for (Docente doc : dep.getDocentes())
+				ori.addAll(doc.getOrientaPos());
+		}
+		Collections.sort(ori);
+		for (OrientaPos o : ori) {
+			String saida = o.getPrograma() + ";" + o.getDateString() + ";" + String.valueOf(o.getMatriculaDiscente())
+					+ ";" + o.getNomeDiscente();
+			output.escreveString(saida);
+		}
+		output.fecharFw();
 	}
 }

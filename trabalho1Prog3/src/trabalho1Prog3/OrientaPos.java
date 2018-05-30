@@ -13,11 +13,8 @@ public class OrientaPos extends Orientacao implements Comparable<OrientaPos> {
 	public OrientaPos(String[] celulas, Discente dis) throws NumberFormatException, ParseException {
 		super(celulas[0], celulas[4], dis);
 		SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
-		try {
-			this.dataIngresso = formato.parse(celulas[2]);
-		} finally {
-			this.programa = celulas[3];
-		}
+		this.dataIngresso = formato.parse(celulas[2]);
+		this.programa = celulas[3];
 	}
 
 	public String getPrograma() {

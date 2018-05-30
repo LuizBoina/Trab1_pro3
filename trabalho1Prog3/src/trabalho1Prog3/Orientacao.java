@@ -12,12 +12,9 @@ public class Orientacao implements Serializable {
 	private int CHsemanal;
 
 	public Orientacao(String codigoDocente, String CHsemanal, Discente dis) throws NumberFormatException {
-		try {
-			this.codigoDocente = Integer.parseInt(codigoDocente);
-			this.CHsemanal = Integer.parseInt(CHsemanal);
-		} finally {
-			this.discente = dis;
-		}
+		this.codigoDocente = Integer.parseInt(codigoDocente);
+		this.CHsemanal = Integer.parseInt(CHsemanal);
+		this.discente = dis;
 	}
 
 	public int getCodigoDocente() {
