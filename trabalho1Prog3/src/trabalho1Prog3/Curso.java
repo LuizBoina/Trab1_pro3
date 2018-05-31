@@ -2,10 +2,15 @@ package trabalho1Prog3;
 
 import java.util.List;
 import java.util.Locale;
+import java.io.Serializable;
 import java.text.Collator;
 import java.util.ArrayList;
 
-public class Curso implements Comparable<Curso> {
+public class Curso implements Comparable<Curso>, Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private List<Disciplina> disciplinas;
 	private int codigo;
 	private String nome;
@@ -23,6 +28,10 @@ public class Curso implements Comparable<Curso> {
 		}catch(ArrayIndexOutOfBoundsException err) {
 			this.ehGrad = false;
 		}
+	}
+	
+	public boolean getEhGrad() {
+		return this.ehGrad;
 	}
 
 	public String getNome() {

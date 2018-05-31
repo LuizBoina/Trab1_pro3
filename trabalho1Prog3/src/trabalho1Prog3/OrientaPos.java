@@ -2,11 +2,16 @@ package trabalho1Prog3;
 
 import java.util.Date;
 import java.util.Locale;
+import java.io.Serializable;
 import java.text.Collator;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
-public class OrientaPos extends Orientacao implements Comparable<OrientaPos> {
+public class OrientaPos extends Orientacao implements Comparable<OrientaPos>, Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Date dataIngresso;
 	private String programa;
 

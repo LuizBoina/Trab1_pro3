@@ -53,10 +53,9 @@ public class Entrada {
 				CAMINHO_PL_ORIENTAGRAD = linhaDeComando[++i];
 			else if (linhaDeComando[i].equals("-op"))
 				CAMINHO_PL_ORIENTAPOS = linhaDeComando[++i];
-			else if (linhaDeComando[i].equals("--read-only")) {
+			else if (linhaDeComando[i].equals("--read-only"))
 				soLeitura = true;
-				i++;
-			}/* else if (linhaDeComando[i].equals("--GUI")) {
+			/* else if (linhaDeComando[i].equals("--GUI")) {
 				this.GUI = true;
 				i++;
 			}*/
@@ -75,8 +74,7 @@ public class Entrada {
 		leitor = new BufferedReader(new FileReader(caminho));
 		while (leitor.readLine() != null)
 			linhas++;
-		if (leitor != null)
-			leitor.close();
+		leitor.close();
 		return (linhas - 1);
 	}
 
@@ -89,17 +87,18 @@ public class Entrada {
 		linhaLida = leitor.readLine();
 		for (int i = 0; (linhaLida = leitor.readLine()) != null; i++)
 			planilha[i] = linhaLida.split(";");
-		if (leitor != null) {
-			leitor.close();
-		}
+		leitor.close();
 		return planilha;
 	}
 
 	public String getCaminhoDosArquivos() {
-		return CAMINHO_PL_ORIENTAPOS.substring(0, CAMINHO_PL_ORIENTAPOS.lastIndexOf("/"));
+		if(this.getSoEscrita() == false)
+			return CAMINHO_PL_ORIENTAPOS.substring(0, CAMINHO_PL_ORIENTAPOS.lastIndexOf("/"));
+		else
+			return CAMINHO_DADOS.substring(0, CAMINHO_DADOS.lastIndexOf("/"));
 	}
 	
-	public Universidade deserializandoDados() throws Exception {
+	public Universidade deserializandoDados() throws IOException, ClassNotFoundException{
 		FileInputStream fin = new FileInputStream(CAMINHO_DADOS);
 		ObjectInputStream ois = new ObjectInputStream(fin);
 		Universidade uni = (Universidade) ois.readObject();
@@ -108,3 +107,4 @@ public class Entrada {
 	}
 
 }
+//--read-only -d /home/proibido/in/docentes.csv -a /home/proibido/in/discentes.csv -p /home/proibido/in/producoes.csv -c /home/proibido/in/cursos.csv -r /home/proibido/in/aulas.csv -og /home/proibido/in/orientagrad.csv -op /home/proibido/in/orientapos.csv

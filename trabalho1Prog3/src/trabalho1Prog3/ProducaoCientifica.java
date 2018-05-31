@@ -21,6 +21,10 @@ public class ProducaoCientifica implements Serializable {
 			this.qualificada = false;
 		}
 	}
+	
+	public String getString() {
+		return this.titulo;
+	}
 
 	public boolean ehQualificada() {
 		return this.qualificada;

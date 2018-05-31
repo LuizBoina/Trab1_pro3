@@ -1,5 +1,6 @@
 package trabalho1Prog3;
 
+
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -31,4 +32,5 @@ public class Saida {
 		fw.flush();
 		fw.close();
 	}
+	
 }
