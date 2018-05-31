@@ -105,12 +105,10 @@ public class Docente implements Comparable<Docente>, Serializable {
 	}
 
 	public ArrayList<OrientaPos> getOrientaPos() {
-		ArrayList oriPos = new ArrayList<OrientaPos>();
+		ArrayList<OrientaPos> oriPos = new ArrayList<OrientaPos>();
 		for (Orientacao ori : orientacoes) {
-			try {//melhorar isso talvez
-				OrientaPos o = (OrientaPos) ori;
-				oriPos.add(o);
-			} catch (ClassCastException err) {}
+			if(ori instanceof OrientaPos)
+				oriPos.add((OrientaPos)ori);
 		}
 		return oriPos;
 	}

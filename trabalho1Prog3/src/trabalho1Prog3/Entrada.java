@@ -8,7 +8,7 @@ import java.io.ObjectInputStream;
 import java.util.Objects;
 
 public class Entrada {
-	//private boolean GUI;
+	// private boolean GUI;
 	private boolean soLeitura;
 	private boolean soEscrita;
 	public static String CAMINHO_PL_DOCENTE;
@@ -18,7 +18,6 @@ public class Entrada {
 	public static String CAMINHO_PL_DISCIPLINAS;
 	public static String CAMINHO_PL_ORIENTAGRAD;
 	public static String CAMINHO_PL_ORIENTAPOS;
-	public static String CAMINHO_DADOS;
 
 	public Entrada(String[] args) {
 		this.lerLinhaComando(args);
@@ -32,9 +31,9 @@ public class Entrada {
 		return this.soEscrita;
 	}
 
-	/*public boolean getGUI() {
-		return this.GUI;
-	}*/
+	/*
+	 * public boolean getGUI() { return this.GUI; }
+	 */
 
 	public void lerLinhaComando(String[] linhaDeComando) {
 		int i = 0;
@@ -55,15 +54,11 @@ public class Entrada {
 				CAMINHO_PL_ORIENTAPOS = linhaDeComando[++i];
 			else if (linhaDeComando[i].equals("--read-only"))
 				soLeitura = true;
-			/* else if (linhaDeComando[i].equals("--GUI")) {
-				this.GUI = true;
-				i++;
-			}*/
-			else if (linhaDeComando[i].equals("--write-only")) {
+			/*
+			 * else if (linhaDeComando[i].equals("--GUI")) { this.GUI = true; i++; }
+			 */
+			else if (linhaDeComando[i].equals("--write-only"))
 				this.soEscrita = true;
-				CAMINHO_DADOS = linhaDeComando[++i];
-				break;
-			}
 			i++;
 		}
 	}
@@ -92,14 +87,11 @@ public class Entrada {
 	}
 
 	public String getCaminhoDosArquivos() {
-		if(this.getSoEscrita() == false)
-			return CAMINHO_PL_ORIENTAPOS.substring(0, CAMINHO_PL_ORIENTAPOS.lastIndexOf("/"));
-		else
-			return CAMINHO_DADOS.substring(0, CAMINHO_DADOS.lastIndexOf("/"));
+		return CAMINHO_PL_ORIENTAPOS.substring(0, CAMINHO_PL_ORIENTAPOS.lastIndexOf("/"));
 	}
-	
-	public Universidade deserializandoDados() throws IOException, ClassNotFoundException{
-		FileInputStream fin = new FileInputStream(CAMINHO_DADOS);
+
+	public Universidade deserializandoDados() throws IOException, ClassNotFoundException {
+		FileInputStream fin = new FileInputStream("dados.dat");
 		ObjectInputStream ois = new ObjectInputStream(fin);
 		Universidade uni = (Universidade) ois.readObject();
 		ois.close();
@@ -107,4 +99,3 @@ public class Entrada {
 	}
 
 }
-//--read-only -d /home/proibido/in/docentes.csv -a /home/proibido/in/discentes.csv -p /home/proibido/in/producoes.csv -c /home/proibido/in/cursos.csv -r /home/proibido/in/aulas.csv -og /home/proibido/in/orientagrad.csv -op /home/proibido/in/orientapos.csv

@@ -24,7 +24,7 @@ public class Main {
 			System.out.println("Erro de I/O");
 		} catch (NumberFormatException | ParseException erroParsing) {
 			System.out.print("Erro de formatação");
-		} catch(ClassNotFoundException erroDeserializacao) { //consertar isso
+		} catch(ClassNotFoundException erroDeserializacao) {
 			System.out.println("Erro em deserializar dados");
 		}
 	}
