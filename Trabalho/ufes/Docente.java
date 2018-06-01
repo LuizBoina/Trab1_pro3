@@ -12,14 +12,14 @@ public class Docente implements Comparable<Docente>, Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	private String nome;
-	private int codigo;
+	private String codigo;
 	private String departamento;
 	private List<ProducaoCientifica> prodCientificas;
 	private List<Orientacao> orientacoes;
 	private List<Curso> cursos;
 
 	public Docente(String[] celulas) throws NumberFormatException {
-		this.codigo = Integer.parseInt(celulas[0]);
+		this.codigo = celulas[0];
 		this.prodCientificas = new ArrayList<ProducaoCientifica>();
 		this.orientacoes = new ArrayList<Orientacao>();
 		this.cursos = new ArrayList<Curso>();
@@ -58,7 +58,7 @@ public class Docente implements Comparable<Docente>, Serializable {
 		return this.departamento;
 	}
 
-	public int getCodigo() {
+	public String getCodigo() {
 		return this.codigo;
 	}
 
@@ -74,7 +74,7 @@ public class Docente implements Comparable<Docente>, Serializable {
 		ArrayList<Disciplina> disci = new ArrayList<Disciplina>();
 		for (Curso cur : cursos) {
 			for (Disciplina dis : cur.getDisciplinas()) {
-				if (dis.getCodigoDocente() == this.codigo)
+				if ((dis.getCodigoDocente()).equals(this.codigo))
 					disci.add(dis);
 			}
 		}

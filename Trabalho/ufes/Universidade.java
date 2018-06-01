@@ -51,7 +51,7 @@ public class Universidade implements Serializable {
 			Departamento depa = this.getDepartamento(str[2]);
 			Docente docen = new Docente(str);
 			for (Docente docens : docentes) {
-				if (docens.getCodigo() == docen.getCodigo())
+				if ((docens.getCodigo()).equals(docen.getCodigo()))
 					throw new ErroMesmoCodigo(docen, docen.getCodigo());
 			}
 			docentes.add(docen);
@@ -109,7 +109,7 @@ public class Universidade implements Serializable {
 		for (String[] str : plDisci) {
 			Disciplina disci = new Disciplina(str);
 			for (Disciplina dis : disciplinas) {
-				if (dis.getCodigo() == disci.getCodigo())
+				if (dis.getCodigo().equals(disci.getCodigo()))
 					throw new ErroMesmoCodigo(disci, disci.getCodigo());
 			}
 			Curso curso = adicionaDisciplinaNoCursoERetornaCurso(disci);
@@ -135,10 +135,10 @@ public class Universidade implements Serializable {
 		return null;
 	}
 
-	private Docente getDocentePelaDisciplina(int codDocente) {
+	private Docente getDocentePelaDisciplina(String codDocente) {
 		for (Departamento depa : departamentos) {
 			for (Docente docen : depa.getDocentes()) {
-				if (docen.getCodigo() == codDocente)
+				if ((docen.getCodigo()).equals(codDocente))
 					return docen;
 			}
 		}
@@ -152,7 +152,7 @@ public class Universidade implements Serializable {
 			Discente discen = new Discente(str);
 			for (Discente dis : discentes) {
 				if (dis.getMatricula() == discen.getMatricula())
-					throw new ErroMesmoCodigo(discen, discen.getMatricula());
+					throw new ErroMesmoCodigo(discen, ((Integer)discen.getMatricula()).toString());
 			}
 			discentes.add(discen);
 			for (Curso cur : cursos) {
@@ -188,7 +188,7 @@ public class Universidade implements Serializable {
 	private boolean adicionouOriDocen(Orientacao ori) {
 		for (Departamento depa : this.departamentos) {
 			for (Docente docen : depa.getDocentes())
-				if (docen.getCodigo() == ori.getCodigoDocente()) {
+				if ((docen.getCodigo()).equals(ori.getCodigoDocente())) {
 					docen.adicionaOrientacaoALista(ori);
 					return true;
 				}
@@ -224,8 +224,8 @@ public class Universidade implements Serializable {
 		return qtd;
 	}
 
-	public void serializarDados(String caminhoSaida) throws IOException {
-		FileOutputStream fout = new FileOutputStream(caminhoSaida + "/dados.dat");
+	public void serializarDados() throws IOException {
+		FileOutputStream fout = new FileOutputStream("dados.dat");
 		ObjectOutputStream oos = new ObjectOutputStream(fout);
 		oos.writeObject(this);
 		oos.close();
@@ -241,7 +241,7 @@ public class Universidade implements Serializable {
 	private void gerarPad(Saida output) throws IOException {
 		int tHSemanais;
 		int tHSemestrais;
-		output.abrirArquivoParaEscrita("/1-pad.csv");
+		output.abrirArquivoParaEscrita("1-pad.csv");
 		output.escreveString(Saida.HEAD_PAD);
 		ArrayList<Docente> docentesUfes = new ArrayList<Docente>(quantidadeTotalDocentes());
 		for (Departamento depa : departamentos)
@@ -264,7 +264,7 @@ public class Universidade implements Serializable {
 	}
 
 	private void gerarRha(Saida output) throws IOException {
-		output.abrirArquivoParaEscrita("/2-rha.csv");
+		output.abrirArquivoParaEscrita("2-rha.csv");
 		output.escreveString(Saida.HEAD_RHA);
 		Collections.sort(departamentos);
 		for (Departamento depa : departamentos) {
@@ -283,7 +283,7 @@ public class Universidade implements Serializable {
 	}
 
 	private void gerarAlocacao(Saida output) throws IOException {
-		output.abrirArquivoParaEscrita("/3-alocacao.csv");
+		output.abrirArquivoParaEscrita("3-alocacao.csv");
 		output.escreveString(Saida.HEAD_ALOCACAO);
 		ArrayList<Docente> docentesUfes = new ArrayList<Docente>(quantidadeTotalDocentes());
 		for (Departamento depa : departamentos)
@@ -293,7 +293,7 @@ public class Universidade implements Serializable {
 			List<Disciplina> disciplinas = docen.getDisciplinasDadas();
 			Collections.sort(disciplinas);
 			for (Disciplina dis : disciplinas) {
-				String saida = docen.getNome() + ";" + String.valueOf(dis.getCodigo()) + ";" + dis.getNome() + ";"
+				String saida = docen.getNome() + ";" + dis.getCodigo() + ";" + dis.getNome() + ";"
 						+ String.valueOf(dis.getcHSemestral());
 				output.escreveString(saida);
 			}
@@ -302,7 +302,7 @@ public class Universidade implements Serializable {
 	}
 
 	private void gerarPpg(Saida output) throws IOException {
-		output.abrirArquivoParaEscrita("/4-ppg.csv");
+		output.abrirArquivoParaEscrita("4-ppg.csv");
 		output.escreveString(Saida.HEAD_PPG);
 		ArrayList<OrientaPos> ori = new ArrayList<OrientaPos>();
 		for (Departamento dep : departamentos) {

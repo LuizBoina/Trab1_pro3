@@ -17,8 +17,8 @@ public class Main {
 	public static void main(String[] args) {
 		Entrada input = new Entrada(args);
 		Universidade ufes;
+		Saida output = new Saida();
 		try {
-			Saida output = new Saida(input.getCaminhoDosArquivos());
 			if (input.getSoEscrita()) {
 				ufes = (Universidade) input.deserializandoDados();
 			} else {
@@ -26,7 +26,7 @@ public class Main {
 				ufes.preencheDadosUniversidade(input);
 			}
 			if (input.getSoLeitura()) {
-				ufes.serializarDados(Saida.CAMINHO_PASTA);
+				ufes.serializarDados();
 			} else
 				ufes.gerarSaidas(output);
 		} catch (IOException | NullPointerException erroAbertura) {
