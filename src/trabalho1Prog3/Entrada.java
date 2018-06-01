@@ -1,13 +1,14 @@
 package trabalho1Prog3;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.Objects;
 
 public class Entrada {
-	private boolean GUI;
+	// private boolean GUI;
 	private boolean soLeitura;
 	private boolean soEscrita;
 	public static String CAMINHO_PL_DOCENTE;
@@ -30,9 +31,9 @@ public class Entrada {
 		return this.soEscrita;
 	}
 
-	public boolean getGUI() {
-		return this.GUI;
-	}
+	/*
+	 * public boolean getGUI() { return this.GUI; }
+	 */
 
 	public void lerLinhaComando(String[] linhaDeComando) {
 		int i = 0;
@@ -51,74 +52,50 @@ public class Entrada {
 				CAMINHO_PL_ORIENTAGRAD = linhaDeComando[++i];
 			else if (linhaDeComando[i].equals("-op"))
 				CAMINHO_PL_ORIENTAPOS = linhaDeComando[++i];
-			else if (linhaDeComando[i].equals("--read-only")) {
+			else if (linhaDeComando[i].equals("--read-only"))
 				soLeitura = true;
-				i++;
-			} else if (linhaDeComando[i].equals("--GUI")) {
-				this.GUI = true;
-				i++;
-			} else if (linhaDeComando[i].equals("--write-only")) {
+			/*
+			 * else if (linhaDeComando[i].equals("--GUI")) { this.GUI = true; i++; }
+			 */
+			else if (linhaDeComando[i].equals("--write-only"))
 				this.soEscrita = true;
-				i++;
-			} else {
-				System.out.println("argumento invalido");
-				i++;
-			}
 			i++;
 		}
 	}
 
-	public int qtdLinhas(String caminho) {
+	public int qtdLinhas(String caminho) throws IOException {
 		int linhas = 0;
-		BufferedReader leitor = null; // tratar se a entrada n for .csv
-		try {
-			leitor = new BufferedReader(new FileReader(caminho));
-			while (leitor.readLine() != null)
-				linhas++;
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (leitor != null)
-					leitor.close();
-				if (leitor != null)
-					leitor.close();
-			} catch (IOException ex) {
-				ex.printStackTrace();
-			}
-		}
-		return (linhas - 1); // total de linhas menos a especif da coluna
+		BufferedReader leitor = null;
+		leitor = new BufferedReader(new FileReader(caminho));
+		while (leitor.readLine() != null)
+			linhas++;
+		leitor.close();
+		return (linhas - 1);
 	}
 
-	public String[][] lePlanilha(String caminhoArq, int qtdCelulas) {
+	public String[][] lePlanilha(String caminhoArq, int qtdCelulas) throws IOException {
 		int numLinhas = qtdLinhas(caminhoArq);
 		String[][] planilha = new String[numLinhas][qtdCelulas];
 		BufferedReader leitor = null;
 		String linhaLida = "";
-		try {
-			leitor = new BufferedReader(new FileReader(caminhoArq));
-			linhaLida = leitor.readLine(); // para desconsiderar a especific da coluna
-			for (int i = 0; (linhaLida = leitor.readLine()) != null; i++) {
-				planilha[i] = linhaLida.split(";");
-			}
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			if (leitor != null) {
-				try {
-					leitor.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}
+		leitor = new BufferedReader(new FileReader(caminhoArq));
+		linhaLida = leitor.readLine();
+		for (int i = 0; (linhaLida = leitor.readLine()) != null; i++)
+			planilha[i] = linhaLida.split(";");
+		leitor.close();
 		return planilha;
 	}
 
 	public String getCaminhoDosArquivos() {
 		return CAMINHO_PL_ORIENTAPOS.substring(0, CAMINHO_PL_ORIENTAPOS.lastIndexOf("/"));
+	}
+
+	public Universidade deserializandoDados() throws IOException, ClassNotFoundException {
+		FileInputStream fin = new FileInputStream("dados.dat");
+		ObjectInputStream ois = new ObjectInputStream(fin);
+		Universidade uni = (Universidade) ois.readObject();
+		ois.close();
+		return uni;
 	}
 
 }

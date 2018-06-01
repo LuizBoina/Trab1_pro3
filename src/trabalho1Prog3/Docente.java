@@ -1,6 +1,8 @@
 package trabalho1Prog3;
 
 import java.util.List;
+import java.util.Collections;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -106,7 +108,7 @@ public class Docente implements Comparable<Docente> , Serializable{
 	}
 
 	public ArrayList<OrientaPos> getOrientaPos() {
-		ArrayList oriPos = new ArrayList<OrientaPos>();
+		ArrayList<OrientaPos> oriPos = new ArrayList<OrientaPos>();
 		for (Orientacao ori : orientacoes) {
 			try {
 				OrientaPos o = (OrientaPos) ori;
@@ -117,15 +119,15 @@ public class Docente implements Comparable<Docente> , Serializable{
 		}
 		return oriPos;
 	}
-	
-	public String toStringParaPad() {
-		String docente = new String();
-		docente.concat(nome+";");
-		docente.concat(departamento+";");
-		docente.concat(new Integer(getTHSemanaisAulas()).toString() + ";");
-		docente.concat(new Integer(getTHSemanaisOrientacao()).toString() + ";");
-		docente.concat(new Integer(getQtdProdCientificasQualificadas()).toString() + ";");
-		docente.concat(new Integer(getQtdProdCientificasNQualificadas()).toString());
-		return docente;
+
+	public ArrayList<Curso> getCursos() {
+		ArrayList<Curso> cursos = new ArrayList<Curso>();
+		for(Disciplina disc : disciplinas) {
+			Curso curs = disc.getCurso();
+			if(!cursos.contains(curs))
+				cursos.add(curs);
+		}
+		Collections.sort(cursos);
+		return cursos;
 	}
 }

@@ -1,6 +1,9 @@
 package trabalho1Prog3;
 
 import java.util.List;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,7 +21,7 @@ public class Universidade implements Serializable {
 		this.departamentos = new ArrayList<Departamento>();
 	}
 
-	public void preencheDadosUniversidade(Entrada input) {
+	public void preencheDadosUniversidade(Entrada input) throws IOException {
 		criaDepartamentos(input.lePlanilha(Entrada.CAMINHO_PL_DOCENTE, 3));
 		adicionaCursos(input.lePlanilha(Entrada.CAMINHO_PL_CURSOS, 4));
 		adicionaProdCientificaAosDocentes(input.lePlanilha(Entrada.CAMINHO_PL_PRODCIENTIFICA, 3));
@@ -26,6 +29,13 @@ public class Universidade implements Serializable {
 		adicionaDiscentesAosCursos(input.lePlanilha(Entrada.CAMINHO_PL_DISCENTE, 3));
 		adicionaOrientacaoGradAosDocentes(input.lePlanilha(Entrada.CAMINHO_PL_ORIENTAGRAD, 4));
 		adicionaOrientacaoPosGradAosDocentes(input.lePlanilha(Entrada.CAMINHO_PL_ORIENTAPOS, 5));
+	}
+	
+	public void serializarDados(String caminhoSaida) throws IOException {
+		FileOutputStream fout = new FileOutputStream(caminhoSaida + "/dados.dat");
+		ObjectOutputStream oos = new ObjectOutputStream(fout);
+		oos.writeObject(this);
+		oos.close();
 	}
 
 	private void criaDepartamentos(String[][] planilhaDocentes) {
@@ -80,7 +90,8 @@ public class Universidade implements Serializable {
 			disciplinas.add(new Disciplina(linha));
 		for (Disciplina dis : disciplinas) {
 			for (Curso curso : cursos)
-				curso.adicionaDisciplinaNoCurso(dis);
+				if(curso.adicionaDisciplinaNoCurso(dis))
+					dis.setCurso(curso);
 			Docente docen = getDocentePelaDisciplina(dis.getCodigoDocente());
 			if(docen != null)
 			if (docen != null && !docen.docenteJaPossuiDisciplina(dis.getCodigo()))
@@ -164,38 +175,45 @@ public class Universidade implements Serializable {
 		return qtd;
 	}
 
-	public void gerarSaidas(Saida output) {
+	public void gerarSaidas(Saida output) throws IOException {
 		gerarPad(output);
 		gerarRha(output);
 		gerarAlocacao(output);
 		gerarPpg(output);
 	}
 
-	private void gerarPad(Saida output) {
-		if (output.abrirArquivoParaEscrita("/1-pad.csv")) {
-			output.escreverCabecalho("HEAD_PAD");
-			ArrayList<Docente> docentesUfes = new ArrayList<Docente>(quantidadeTotalDocentes());
-			for (Departamento depa : departamentos)
-				docentesUfes.addAll(depa.getDocentes());
-			Collections.sort(docentesUfes);
-			for (Docente docen : docentesUfes)
-				output.escreveString(docen.toStringParaPad());
-			output.fecharFw();
-		}
+	private void gerarPad(Saida output) throws IOException {
+		output.abrirArquivoParaEscrita("/1-pad.csv");
+		output.escreveString(Saida.HEAD_PAD);
+		ArrayList<Docente> docentesUfes = new ArrayList<Docente>(quantidadeTotalDocentes());
+		for (Departamento depa : departamentos)
+			docentesUfes.addAll(depa.getDocentes());
+		Collections.sort(docentesUfes);
+		for (Docente docen : docentesUfes)
+			output.escreveString(DocenteParaPad(docen));
+		output.fecharFw();
+	}
+	
+	public String DocenteParaPad(Docente doc) {
+		String docente = new String();
+		docente.concat(doc.getNome()+";");
+		docente.concat(doc.getDepartamento()+";");
+		docente.concat(new Integer(doc.getTHSemanaisAulas()).toString() + ";");
+		docente.concat(new Integer(doc.getTHSemanaisOrientacao()).toString() + ";");
+		docente.concat(new Integer(doc.getQtdProdCientificasQualificadas()).toString() + ";");
+		docente.concat(new Integer(doc.getQtdProdCientificasNQualificadas()).toString());
+		return docente;
 	}
 
-	private void gerarRha(Saida output) {
-		if (output.abrirArquivoParaEscrita("/2-rha.csv")) {
-			output.escreverCabecalho("HEAD_RHA");
-			ArrayList<Docente> docentesUfes = new ArrayList<Docente>(quantidadeTotalDocentes());
-			Collections.sort(departamentos);
-			for (Departamento depa : departamentos)
-				docentesUfes.addAll(depa.getDocentes());
-			Collections.sort(docentesUfes);
-			for (Docente docen : docentesUfes) {
-				List<Curso> cur = docen.getCursos();
-				Collections.sort(cur);
-				for (Curso curso : cur) {
+	private void gerarRha(Saida output) throws IOException {
+		output.abrirArquivoParaEscrita("/2-rha.csv");
+		output.escreveString(Saida.HEAD_RHA);
+		Collections.sort(departamentos);
+		for (Departamento depa : departamentos) {
+			Collections.sort(depa.getDocentes());
+			for (Docente docen : depa.getDocentes()) {
+				ArrayList<Curso> cursosDoc = docen.getCursos();
+				for (Curso curso : cursosDoc) {
 					String saida = docen.getDepartamento() + ";" + docen.getNome() + ";"
 							+ String.valueOf(curso.getCodigoCurso()) + ";" + curso.getNome() + ";"
 							+ String.valueOf(curso.TotalHorasDeDocente(docen.getCodigo()));

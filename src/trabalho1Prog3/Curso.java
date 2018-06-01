@@ -27,6 +27,19 @@ public class Curso implements Comparable<Curso>{
 		}
 	}
 	
+	public Curso(int cod) {
+		disciplinas = null;
+		codigo = cod;
+		nome = null;
+		ehGrad = false;
+		discentes = null;
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		return this.codigo == ((Curso)o).codigo;
+	}
+	
 	public String getNome() {
 		return this.nome;
 	}
@@ -52,9 +65,11 @@ public class Curso implements Comparable<Curso>{
 		return this.disciplinas;
 	}
 
-	public void adicionaDisciplinaNoCurso(Disciplina disciplina) {
-		if (getCodigoCurso() == disciplina.getCodigoCurso())
-		this.disciplinas.add(disciplina);
+	public boolean adicionaDisciplinaNoCurso(Disciplina disciplina) {
+		if (getCodigoCurso() == disciplina.getCodigoCurso()) {
+			this.disciplinas.add(disciplina);
+			return true;
+		}return false;
 	}
 	
 	public void adicionaDiscenteNoCurso(Discente discente) {

@@ -12,7 +12,7 @@ public class Disciplina implements Comparable<Disciplina> , Serializable{
 	private int codigoDocente;
 	private int cHSemanal;
 	private int cHSemestral;
-	private int codigoCurso;
+	private Curso curso;
 
 	public Disciplina(String[] celulas) {
 		try {
@@ -20,7 +20,7 @@ public class Disciplina implements Comparable<Disciplina> , Serializable{
 			this.codigoDocente = Integer.parseInt(celulas[2]);
 			this.cHSemanal = Integer.parseInt(celulas[3]);
 			this.cHSemestral = Integer.parseInt(celulas[4]);
-			this.codigoCurso = Integer.parseInt(celulas[5]);
+			this.curso = new Curso(Integer.parseInt(celulas[5]));
 
 		} catch (NumberFormatException e) {
 			System.out.println("Numero com formato errado!");
@@ -37,7 +37,7 @@ public class Disciplina implements Comparable<Disciplina> , Serializable{
 	}
 	
 	public int getCodigoCurso() {
-		return this.codigoCurso;
+		return this.curso.getCodigoCurso();
 	}
 	
 	public int compareTo(Disciplina outraDisciplina) {
@@ -54,5 +54,13 @@ public class Disciplina implements Comparable<Disciplina> , Serializable{
 	
 	public int getcHSemestral() {
 		return this.cHSemestral;
+	}
+
+	public Curso getCurso() {
+		return this.curso;
+	}
+
+	public void setCurso(Curso curso2) {
+		curso = curso2;
 	}
 }
