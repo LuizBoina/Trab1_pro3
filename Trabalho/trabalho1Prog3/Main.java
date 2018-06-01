@@ -16,9 +16,9 @@ public class Main {
 
 	public static void main(String[] args) {
 		Entrada input = new Entrada(args);
-		Saida output = new Saida(input.getCaminhoDosArquivos());
 		Universidade ufes;
 		try {
+			Saida output = new Saida(input.getCaminhoDosArquivos());
 			if (input.getSoEscrita()) {
 				ufes = (Universidade) input.deserializandoDados();
 			} else {
@@ -29,7 +29,7 @@ public class Main {
 				ufes.serializarDados(Saida.CAMINHO_PASTA);
 			} else
 				ufes.gerarSaidas(output);
-		} catch (IOException erroAbertura) {
+		} catch (IOException | NullPointerException erroAbertura) {
 			System.out.println("Erro de I/O");
 		} catch (NumberFormatException | ParseException erroParsing) {
 			System.out.print("Erro de formatação");

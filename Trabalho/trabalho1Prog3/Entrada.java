@@ -88,7 +88,7 @@ public class Entrada {
 		return planilha;
 	}
 
-	public String getCaminhoDosArquivos() {
+	public String getCaminhoDosArquivos() throws NullPointerException {
 		return CAMINHO_PL_ORIENTAPOS.substring(0, CAMINHO_PL_ORIENTAPOS.lastIndexOf("/"));
 	}
 

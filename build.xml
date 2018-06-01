@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project basedir="." default="compile" name="Trab1_pro3">
+    <property environment="env"/>
+    <property name="debuglevel" value="source,lines,vars"/>
+    <property name="target" value="1.8"/>
+    <property name="source" value="1.8"/>
+    <path id="Trab1_pro3.classpath">
+        <pathelement location="trabalho/bin"/>
+    </path>
+    <target name="init">
+        <mkdir dir="trabalho/bin"/>
+        <copy includeemptydirs="false" todir="trabalho/bin">
+            <fileset dir="Trabalho">
+                <exclude name="**/*.launch"/>
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="clean">
+        <delete dir="trabalho/bin"/>
+    </target>
+    <target depends="clean" name="cleanall"/>
+    <target depends="build-subprojects,build-project" name="compile"/>
+    <target name="build-subprojects"/>
+    <target depends="init" name="build-project">
+        <echo message="${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" debuglevel="${debuglevel}" destdir="trabalho/bin" includeantruntime="false" source="${source}" target="${target}">
+            <src path="Trabalho"/>
+            <classpath refid="Trab1_pro3.classpath"/>
+        </javac>
+    </target>
+    <target description="Build all projects which reference this project. Useful to propagate changes." name="build-refprojects"/>
+    <target name="Main">
+        <java classname="trabalho.Main" failonerror="true" fork="yes">
+            <arg line="-d docentes.csv -p producoes.csv -a discentes.csv -o atividades.csv -c cursos.csv -r disciplinas.csv"/>
+            <classpath refid="Trab1_pro3.classpath"/>
+        </java>
+    </target>
+    <target name="run">
+        <java classname="trabalho1Prog3.Main" failonerror="true" fork="yes">
+            <classpath refid="Trab1_pro3.classpath"/>
+        </java>
+    </target>
+</project>
