@@ -7,12 +7,12 @@ public class ProducaoCientifica implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private String codigoDocente;
+	private int codigoDocente;
 	private String titulo;
 	private boolean qualificada;
 
 	public ProducaoCientifica(String[] celulas) throws NumberFormatException {
-		this.codigoDocente = celulas[0];
+		this.codigoDocente = Integer.parseInt(celulas[0]);
 		this.titulo = celulas[1];
 		try {// melhorar isso talvez
 			if (celulas[2].equals("X"))
@@ -30,7 +30,7 @@ public class ProducaoCientifica implements Serializable {
 		return this.qualificada;
 	}
 
-	public String getCodigoDocente() {
+	public int getCodigoDocente() {
 		return this.codigoDocente;
 	}
 }

@@ -43,7 +43,7 @@ public class Departamento implements Comparable<Departamento>, Serializable {
 
 	public boolean achouDocente(ProducaoCientifica prod) {
 		for (Docente docen : docentes) {
-			if ((docen.getCodigo()).equals(prod.getCodigoDocente())) {
+			if (docen.getCodigo() == prod.getCodigoDocente()) {
 				docen.adicionaProdCientifica(prod);
 				return true;
 			}
@@ -53,7 +53,7 @@ public class Departamento implements Comparable<Departamento>, Serializable {
 
 	public Docente achouDocenteNoDepartamento(Orientacao orienta) {
 		for (Docente docen : this.docentes) {
-			if ((docen.getCodigo()).equals(orienta.getCodigoDocente()))
+			if (docen.getCodigo() == orienta.getCodigoDocente())
 				return docen;
 		}
 		return null;

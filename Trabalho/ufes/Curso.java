@@ -49,10 +49,10 @@ public class Curso implements Comparable<Curso>, Serializable {
 		return this.nome;
 	}
 
-	public int TotalHorasDeDocente(String codDocente) {
+	public int TotalHorasDeDocente(int codDocente) {
 		int qtd = 0;
 		for (Disciplina disci : disciplinas) {
-			if ((disci.getCodigoDocente()).equals(codDocente))
+			if (disci.getCodigoDocente() == codDocente)
 				qtd += disci.getcHSemestral();
 		}
 		return qtd;

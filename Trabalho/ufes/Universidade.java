@@ -51,7 +51,7 @@ public class Universidade implements Serializable {
 			Departamento depa = this.getDepartamento(str[2]);
 			Docente docen = new Docente(str);
 			for (Docente docens : docentes) {
-				if ((docens.getCodigo()).equals(docen.getCodigo()))
+				if (docens.getCodigo() == docen.getCodigo())
 					throw new ErroMesmoCodigo(docen, docen.getCodigo());
 			}
 			docentes.add(docen);
@@ -135,10 +135,10 @@ public class Universidade implements Serializable {
 		return null;
 	}
 
-	private Docente getDocentePelaDisciplina(String codDocente) {
+	private Docente getDocentePelaDisciplina(int codDocente) {
 		for (Departamento depa : departamentos) {
 			for (Docente docen : depa.getDocentes()) {
-				if ((docen.getCodigo()).equals(codDocente))
+				if (docen.getCodigo() == codDocente)
 					return docen;
 			}
 		}
@@ -188,7 +188,7 @@ public class Universidade implements Serializable {
 	private boolean adicionouOriDocen(Orientacao ori) {
 		for (Departamento depa : this.departamentos) {
 			for (Docente docen : depa.getDocentes())
-				if ((docen.getCodigo()).equals(ori.getCodigoDocente())) {
+				if (docen.getCodigo() == ori.getCodigoDocente()) {
 					docen.adicionaOrientacaoALista(ori);
 					return true;
 				}

@@ -32,23 +32,23 @@ public class Main {
 		} catch (IOException | NullPointerException erroAbertura) {
 			System.out.println("Erro de I/O");
 		} catch (NumberFormatException | ParseException erroParsing) {
-			System.out.print("Erro de formatação");
+			System.out.println("Erro de formatação");
 		} catch (ClassNotFoundException erroDeserializacao) {
 			System.out.println("Erro em deserializar dados");
 		} catch (ErroMesmoCodigo msmCod) {
-			msmCod.getMessage();
+			System.out.println(msmCod.getMessage());
 		} catch (ErroCodInvalDocenEmDisci CodDocenInvalidoDisciDocen) {
-			CodDocenInvalidoDisciDocen.getMessage();
+			System.out.println(CodDocenInvalidoDisciDocen.getMessage());
 		} catch (ErroCodInvalCurEmDisci codCursoInvalidoDisciCurso) {
-			codCursoInvalidoDisciCurso.getMessage();
+			System.out.println(codCursoInvalidoDisciCurso.getMessage());
 		} catch (ErroCodInvalDocenEmOri codInvalidoOriDocen) {
-			codInvalidoOriDocen.getMessage();
+			System.out.println(codInvalidoOriDocen.getMessage());
 		} catch (ErroCodInvalCursoEmOri codInvalidoOriCurso) {
-			codInvalidoOriCurso.getMessage();
+			System.out.println(codInvalidoOriCurso.getMessage());
 		} catch (ErroInconsisNivelCurso niveisIguais) {
-			niveisIguais.getMessage();
+			System.out.println(niveisIguais.getMessage());
 		} catch (ErroDataNoFuturo dataInvalida) {
-			dataInvalida.getMessage();
+			System.out.println(dataInvalida.getMessage());
 		}
 	}
 

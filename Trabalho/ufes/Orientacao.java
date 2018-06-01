@@ -7,17 +7,17 @@ public class Orientacao implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private String codigoDocente;
+	private int codigoDocente;
 	protected Discente discente;
 	private int CHsemanal;
 
 	public Orientacao(String codigoDocente, String CHsemanal, Discente dis) throws NumberFormatException {
-		this.codigoDocente = codigoDocente;
+		this.codigoDocente = Integer.parseInt(codigoDocente);
 		this.CHsemanal = Integer.parseInt(CHsemanal);
 		this.discente = dis;
 	}
 
-	public String getCodigoDocente() {
+	public int getCodigoDocente() {
 		return this.codigoDocente;
 	}
 

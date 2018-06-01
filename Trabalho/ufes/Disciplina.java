@@ -9,14 +9,14 @@ public class Disciplina implements Comparable<Disciplina>, Serializable {
 	private static final long serialVersionUID = 1L;
 	private String codigo;
 	private String nome;
-	private String codigoDocente;
+	private int codigoDocente;
 	private int cHSemanal;
 	private int cHSemestral;
 	private int codigoCurso;
 
 	public Disciplina(String[] celulas) throws NumberFormatException {
 		this.codigo = celulas[0];
-		this.codigoDocente = celulas[2];
+		this.codigoDocente = Integer.parseInt(celulas[2]);
 		this.cHSemanal = Integer.parseInt(celulas[3]);
 		this.cHSemestral = Integer.parseInt(celulas[4]);
 		this.codigoCurso = Integer.parseInt(celulas[5]);
@@ -39,7 +39,7 @@ public class Disciplina implements Comparable<Disciplina>, Serializable {
 		return Integer.parseInt(this.codigo) - Integer.parseInt(outraDisciplina.codigo);
 	}
 
-	public String getCodigoDocente() {
+	public int getCodigoDocente() {
 		return this.codigoDocente;
 	}
 
