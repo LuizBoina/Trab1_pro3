@@ -78,7 +78,7 @@ public class Disciplina implements Comparable<Disciplina>, Serializable {
 	 * 		   código da outra Disciplina.
 	 */
 	public int compareTo(Disciplina outraDisciplina) {
-		return Integer.parseInt(this.codigo) - Integer.parseInt(outraDisciplina.codigo);
+		return this.codigo.compareTo(outraDisciplina.getCodigo());
 	}
 
 	/**
