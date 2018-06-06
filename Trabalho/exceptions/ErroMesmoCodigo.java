@@ -23,8 +23,8 @@ public class ErroMesmoCodigo extends Exception {
 	 * @param obj é o objeto cujo código está repetido.
 	 * @param codigo é a String com o código repetido.
 	 */
-	public ErroMesmoCodigo(Object obj, String codigo) {
-		super("Código repetido para " + obj.toString() + ": " + codigo + ".");
+	public ErroMesmoCodigo(String tipoObj, String codigo) {
+		super("Código repetido para " + tipoObj + ": " + codigo + ".");
 	}
 	
 	/**
@@ -33,7 +33,7 @@ public class ErroMesmoCodigo extends Exception {
 	 * @param obj é o objeto cujo código está repetido.
 	 * @param codigo é o int com o código repetido.
 	 */
-	public ErroMesmoCodigo(Object obj, int codigo) {
-		super("Código repetido para " + obj.toString() + ": " + codigo + ".");
+	public ErroMesmoCodigo(String tipoObj, int codigo) {
+		super("Código repetido para " + tipoObj + ": " + codigo + ".");
 	}
 }
