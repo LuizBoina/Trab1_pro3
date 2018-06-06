@@ -30,10 +30,10 @@ public class ProducaoCientifica implements Serializable {
 	 * @throws NumberFormatException se não for possível converter uma String em um int.
 	 */
 	public ProducaoCientifica(String[] celulas) throws NumberFormatException {
-		this.codigoDocente = Integer.parseInt(celulas[0]);
-		this.titulo = celulas[1];
-		try {// melhorar isso talvez
-			if (celulas[2].equals("X"))
+		this.codigoDocente = Integer.parseInt(celulas[0].trim());
+		this.titulo = celulas[1].trim();
+		try {
+			if ((celulas[2].trim()).equals("X"))
 				this.qualificada = true;
 		} catch (ArrayIndexOutOfBoundsException e) {
 			this.qualificada = false;

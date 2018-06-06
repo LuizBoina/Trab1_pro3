@@ -39,12 +39,12 @@ public class Docente implements Comparable<Docente>, Serializable {
 	 * @throws NumberFormatException se não for possível converter alguma String do array em int.
 	 */
 	public Docente(String[] celulas) throws NumberFormatException {
-		this.codigo = Integer.parseInt(celulas[0]);
+		this.codigo = Integer.parseInt(celulas[0].trim());
 		this.prodCientificas = new ArrayList<ProducaoCientifica>();
 		this.orientacoes = new ArrayList<Orientacao>();
 		this.cursos = new ArrayList<Curso>();
-		this.nome = celulas[1];
-		this.departamento = celulas[2];
+		this.nome = celulas[1].trim();
+		this.departamento = celulas[2].trim();
 	}
 
 	/**

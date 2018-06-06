@@ -46,11 +46,11 @@ public class OrientaPos extends Orientacao implements Comparable<OrientaPos>, Se
 	public OrientaPos(String[] celulas, Discente dis) throws NumberFormatException, ParseException, ErroDataNoFuturo {
 		super(celulas[0], celulas[4], dis);
 		SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
-		this.dataIngresso = formato.parse(celulas[2]);
+		this.dataIngresso = formato.parse(celulas[2].trim());
 		Date dataAtual = new Date();
 		if (this.dataIngresso.after(dataAtual))
 			throw new ErroDataNoFuturo(super.getNomeDiscente(), this.getDateString());
-		this.programa = celulas[3];
+		this.programa = celulas[3].trim();
 	}
 
 	/**

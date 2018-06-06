@@ -30,7 +30,7 @@ public class Departamento implements Comparable<Departamento>, Serializable {
 	 * @param nome é o nome do Departamento.
 	 */
 	public Departamento(String nome) {
-		this.nome = nome;
+		this.nome = nome.trim();
 		this.docentes = new ArrayList<Docente>();
 	}
 

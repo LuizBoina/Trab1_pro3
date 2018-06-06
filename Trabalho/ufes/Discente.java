@@ -30,9 +30,9 @@ public class Discente implements Serializable {
 	 *         para int.
 	 */
 	public Discente(String[] celulas) throws NumberFormatException {
-		this.matricula = Integer.parseInt(celulas[0]);
-		this.codigoCurso = Integer.parseInt(celulas[2]);
-		this.nome = celulas[1];
+		this.matricula = Integer.parseInt(celulas[0].trim());
+		this.codigoCurso = Integer.parseInt(celulas[2].trim());
+		this.nome = celulas[1].trim();
 	}
 
 	/**

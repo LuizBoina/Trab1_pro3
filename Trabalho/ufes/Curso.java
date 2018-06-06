@@ -39,18 +39,18 @@ public class Curso implements Comparable<Curso>, Serializable {
 	 * @throws NumberFormatException caso o código do curso passado em celulas não possa ser convertido em int.
 	 */
 	public Curso(String[] celulas) throws NumberFormatException {
-		this.codigo = Integer.parseInt(celulas[0]);
+		this.codigo = Integer.parseInt(celulas[0].trim());
 		discentes = new ArrayList<Discente>();
 		disciplinas = new ArrayList<Disciplina>();
-		this.nome = celulas[1];
+		this.nome = celulas[1].trim();
 		try {
-			if (celulas[2].equals("X"))
+			if ((celulas[2].trim()).equals("X"))
 				this.ehGrad = true;
 		} catch (ArrayIndexOutOfBoundsException err) {
 			this.ehGrad = false;
 		}
 		try {
-			if (celulas[3].equals("X"))
+			if ((celulas[3].trim()).equals("X"))
 				this.ehPos = true;
 		} catch (ArrayIndexOutOfBoundsException err) {
 			this.ehPos = false;

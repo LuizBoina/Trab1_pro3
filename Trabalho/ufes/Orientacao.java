@@ -33,8 +33,8 @@ public class Orientacao implements Serializable {
 	 * @throws NumberFormatException se não for possível converter uma String em um int.
 	 */
 	public Orientacao(String codigoDocente, String CHsemanal, Discente dis) throws NumberFormatException {
-		this.codigoDocente = Integer.parseInt(codigoDocente);
-		this.CHsemanal = Integer.parseInt(CHsemanal);
+		this.codigoDocente = Integer.parseInt(codigoDocente.trim());
+		this.CHsemanal = Integer.parseInt(CHsemanal.trim());
 		this.discente = dis;
 	}
 

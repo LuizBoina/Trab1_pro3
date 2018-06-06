@@ -35,12 +35,12 @@ public class Disciplina implements Comparable<Disciplina>, Serializable {
 	 * @throws NumberFormatException se não for possível converter para int as String do array. 
 	 */
 	public Disciplina(String[] celulas) throws NumberFormatException {
-		this.codigo = celulas[0];
-		this.codigoDocente = Integer.parseInt(celulas[2]);
-		this.cHSemanal = Integer.parseInt(celulas[3]);
-		this.cHSemestral = Integer.parseInt(celulas[4]);
-		this.codigoCurso = Integer.parseInt(celulas[5]);
-		this.nome = celulas[1];
+		this.codigo = celulas[0].trim();
+		this.codigoDocente = Integer.parseInt(celulas[2].trim());
+		this.cHSemanal = Integer.parseInt(celulas[3].trim());
+		this.cHSemestral = Integer.parseInt(celulas[4].trim());
+		this.codigoCurso = Integer.parseInt(celulas[5].trim());
+		this.nome = celulas[1].trim();
 	}
 
 	/**
