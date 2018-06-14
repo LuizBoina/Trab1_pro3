@@ -7,13 +7,14 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.Objects;
 
-import ufes.Universidade;
+import dominio.Universidade;
 
 /**
- * Essa classe armazena o caminho dos arquivos de entrada, possui métodos para extração de dados desses arquivos e 
- * determina o modo de execução do sistema.
+ * Essa classe armazena o caminho dos arquivos de entrada, possui métodos para
+ * extração de dados desses arquivos e determina o modo de execução do sistema.
  * 
- * <p> Essa classe é uma parte do pacote trabalho1Prog3</a>.
+ * <p>
+ * Essa classe é uma parte do pacote trabalho1Prog3</a>.
  * 
  * @author Luiz Felipe Boina
  * @author Fernando Bisi Vieira
@@ -22,62 +23,90 @@ import ufes.Universidade;
  * @see Exception
  */
 public class Entrada {
-	
-	//Declaração dos atributos privados
-	/**Atributo que determina se o método de execução é "--read-only"*/
+
+	// Declaração dos atributos privados
+	/** Atributo que determina se o método de execução é "--read-only" */
 	private boolean soLeitura;
-	/**Atributo que determina se o método de execução é "--write-only"*/
+	/** Atributo que determina se o método de execução é "--write-only" */
 	private boolean soEscrita;
-	
-	//Declaração dos atributos publicos
-	/**Atributo que armazina o caminho da planilha de docentes*/
-	public static String CAMINHO_PL_DOCENTE;
-	/**Atributo que armazina o caminho da planilha de discentes*/
-	public static String CAMINHO_PL_DISCENTE;
-	/**Atributo que armazina o caminho da planilha de produções científicas*/
-	public static String CAMINHO_PL_PRODCIENTIFICA;
-	/**Atributo que armazina o caminho da planilha de cursos*/
-	public static String CAMINHO_PL_CURSOS;
-	/**Atributo que armazina o caminho da planilha de disciplinas*/
-	public static String CAMINHO_PL_DISCIPLINAS;
-	/**Atributo que armazina o caminho da planilha de orientações de discentes da graduação*/
-	public static String CAMINHO_PL_ORIENTAGRAD;
-	/**Atributo que armazina o caminho da planilha de orientações de discentes da pós-graduação*/
-	public static String CAMINHO_PL_ORIENTAPOS;
-	
 	/**
-	 * Contrutor de Entrada que pega as informações de um array de String para formar uma Entrada, onde as Strings
-	 * podem ser caminho de arquivo, flags que determinam o tipo do arquivo cujo caminho está logo em seguida no array e
-	 * flags que determinam o modo de execução do arquivo. 
+	 * Atributo que determina se o programa deve ser rodado com interface gráfica
+	 */
+	private boolean GUI;
+	// Declaração dos atributos publicos
+	/** Atributo que armazina o caminho da planilha de docentes */
+	public static String CAMINHO_PL_DOCENTE;
+	/** Atributo que armazina o caminho da planilha de discentes */
+	public static String CAMINHO_PL_DISCENTE;
+	/** Atributo que armazina o caminho da planilha de produções científicas */
+	public static String CAMINHO_PL_PRODCIENTIFICA;
+	/** Atributo que armazina o caminho da planilha de cursos */
+	public static String CAMINHO_PL_CURSOS;
+	/** Atributo que armazina o caminho da planilha de disciplinas */
+	public static String CAMINHO_PL_DISCIPLINAS;
+	/**
+	 * Atributo que armazina o caminho da planilha de orientações de discentes da
+	 * graduação
+	 */
+	public static String CAMINHO_PL_ORIENTAGRAD;
+	/**
+	 * Atributo que armazina o caminho da planilha de orientações de discentes da
+	 * pós-graduação
+	 */
+	public static String CAMINHO_PL_ORIENTAPOS;
+
+	/**
+	 * Contrutor de Entrada que pega as informações de um array de String para
+	 * formar uma Entrada, onde as Strings podem ser caminho de arquivo, flags que
+	 * determinam o tipo do arquivo cujo caminho está logo em seguida no array e
+	 * flags que determinam o modo de execução do arquivo.
 	 * 
-	 * @param args é o array de String que contém as informações para a construção de Entrada
+	 * @param args
+	 *            é o array de String que contém as informações para a construção de
+	 *            Entrada
 	 */
 	public Entrada(String[] args) {
 		this.lerLinhaComando(args);
 	}
-	
+
 	/**
 	 * Método que retorna se o modo de execução é "--read-only"
 	 * 
-	 * @return um boolean, true se for modo execução "--read-only" e false caso não for.
+	 * @return um boolean, true se for modo execução "--read-only" e false caso não
+	 *         for.
 	 */
 	public boolean getSoLeitura() {
 		return this.soLeitura;
 	}
-	
+
+	public void setSoLeitura(boolean leitura) {
+		this.soLeitura = leitura;
+	}
+
+	public void setSoEscrita(boolean escrita) {
+		this.soEscrita = escrita;
+	}
+
 	/**
 	 * Método que retorna se o modo de execução é "--write-only"
 	 * 
-	 * @return um boolean, true se for modo execução "--write-only" e false caso não for.
+	 * @return um boolean, true se for modo execução "--write-only" e false caso não
+	 *         for.
 	 */
 	public boolean getSoEscrita() {
 		return this.soEscrita;
 	}
-	
+
+	public boolean getGUI() {
+		return this.GUI;
+	}
+
 	/**
-	 * Método que extrai as informações de um array de String para armazenar em Entrada.
+	 * Método que extrai as informações de um array de String para armazenar em
+	 * Entrada.
 	 * 
-	 * @param linhaDeComando é o array de String que contém as informações a serem armazenadas.
+	 * @param linhaDeComando
+	 *            é o array de String que contém as informações a serem armazenadas.
 	 */
 	private void lerLinhaComando(String[] linhaDeComando) {
 		int i = 0;
@@ -100,6 +129,8 @@ public class Entrada {
 				soLeitura = true;
 			else if (linhaDeComando[i].equals("--write-only"))
 				this.soEscrita = true;
+			else if (linhaDeComando[i].equals("--GUI"))
+				this.GUI = true;
 			i++;
 		}
 	}
@@ -107,9 +138,11 @@ public class Entrada {
 	/**
 	 * Método que descobre a quantidade de linhas de uma arquivo.
 	 * 
-	 * @param caminho é a String que contém o caminho do arquivo.
+	 * @param caminho
+	 *            é a String que contém o caminho do arquivo.
 	 * @return um int com o número de linhas do arquivo.
-	 * @throws IOException se o arquivo não existir no caminho dado.
+	 * @throws IOException
+	 *             se o arquivo não existir no caminho dado.
 	 */
 	public int qtdLinhas(String caminho) throws IOException {
 		int linhas = 0;
@@ -124,10 +157,14 @@ public class Entrada {
 	/**
 	 * Método que lê uma planilha, mantendo sua organização em células e colunas.
 	 * 
-	 * @param caminhoArq é o caminho da planilha a ser lida.
-	 * @param qtdCelulas é a quantidade de células da planilha.
-	 * @return uma matriz de String, que contém as informações da planilha organizadas.
-	 * @throws IOException se a planilha não existir no caminho dado.
+	 * @param caminhoArq
+	 *            é o caminho da planilha a ser lida.
+	 * @param qtdCelulas
+	 *            é a quantidade de células da planilha.
+	 * @return uma matriz de String, que contém as informações da planilha
+	 *         organizadas.
+	 * @throws IOException
+	 *             se a planilha não existir no caminho dado.
 	 */
 	public String[][] lePlanilha(String caminhoArq, int qtdCelulas) throws IOException {
 		int numLinhas = qtdLinhas(caminhoArq);
@@ -143,12 +180,15 @@ public class Entrada {
 	}
 
 	/**
-	 * Método que deserializa os dados contidos num arquivo "dados.dat" na raiz do código fonte.
+	 * Método que deserializa os dados contidos num arquivo "dados.dat" na raiz do
+	 * código fonte.
 	 * 
 	 * @return um Universidade que contem os dados de "dados.dat"
-	 * @throws IOException se o arquivo "dados.dat" não estiver no diretório correto.
-	 * @throws ClassNotFoundException se os dados dentro de "dados.dat" não estiverem no formato de Universidade 
-	 * serializada.
+	 * @throws IOException
+	 *             se o arquivo "dados.dat" não estiver no diretório correto.
+	 * @throws ClassNotFoundException
+	 *             se os dados dentro de "dados.dat" não estiverem no formato de
+	 *             Universidade serializada.
 	 */
 	public Universidade deserializandoDados() throws IOException, ClassNotFoundException {
 		FileInputStream fin = new FileInputStream("dados.dat");
@@ -156,6 +196,34 @@ public class Entrada {
 		Universidade uni = (Universidade) ois.readObject();
 		ois.close();
 		return uni;
+	}
+
+	public void setIndexDocen(String caminho) {
+		CAMINHO_PL_DOCENTE = caminho;
+	}
+
+	public void setIndexDiscen(String caminho) {
+		CAMINHO_PL_DISCENTE = caminho;
+	}
+
+	public void setIndexCur(String caminho) {
+		CAMINHO_PL_CURSOS = caminho;
+	}
+
+	public void setIndexAulas(String caminho) {
+		CAMINHO_PL_DISCIPLINAS = caminho;
+	}
+
+	public void setIndexOriGrad(String caminho) {
+		CAMINHO_PL_ORIENTAGRAD = caminho;
+	}
+
+	public void setIndexOriPos(String caminho) {
+		CAMINHO_PL_ORIENTAPOS = caminho;
+	}
+
+	public void setIndexProd(String caminho) {
+		CAMINHO_PL_PRODCIENTIFICA = caminho;
 	}
 
 }

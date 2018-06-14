@@ -3,6 +3,7 @@ package trabalho1Prog3;
 import java.io.IOException;
 import java.text.ParseException;
 
+import dominio.Universidade;
 import exceptions.ErroCodInvalCurEmDisci;
 import exceptions.ErroCodInvalCursoEmOri;
 import exceptions.ErroCodInvalDocenEmDisci;
@@ -10,7 +11,7 @@ import exceptions.ErroCodInvalDocenEmOri;
 import exceptions.ErroDataNoFuturo;
 import exceptions.ErroInconsisNivelCurso;
 import exceptions.ErroMesmoCodigo;
-import ufes.Universidade;
+import interfaceGrafica.GUI;
 /**
  * Essa classe contém o método principal para o sistema de gerenciamento de atividades de docente da UFES, que cria os
  * principais objetos do sistema e trata suas excessões. 
@@ -45,15 +46,19 @@ public class Main {
 		Saida output = new Saida();
 		Universidade ufes;
 		try {
-			if (input.getSoEscrita()) {
+			if(input.getGUI()) {
+				GUI inter = new GUI(input);
+				inter.mostraJanela();
+			}
+			if (input.getSoEscrita())
 				ufes = (Universidade) input.deserializandoDados();
-			} else {
+			else {
 				ufes = new Universidade(input.qtdLinhas(Entrada.CAMINHO_PL_CURSOS));
 				ufes.preencheDadosUniversidade(input);
 			}
-			if (input.getSoLeitura()) {
+			if (input.getSoLeitura())
 				ufes.serializarDados();
-			} else
+			else
 				ufes.gerarSaidas(output);
 		} catch (IOException | NullPointerException erroAbertura) {
 			System.out.println("Erro de I/O");
